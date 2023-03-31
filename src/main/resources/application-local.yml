@@ -1,2 +1,17 @@
 server:
   port: 8081
+spring:
+  application:
+    name: seal-service
+  cloud:
+    consul:
+      discovery:
+        health-check-path: /actuator/health #检测实例健康
+        health-check- interval: 10s
+        #每隔1es检查
+        hostname: 127.0.0.1
+        #配置实例地址
+        register: true # 自动注册
+        service-name: ${spring.application.name} #实例名称
+      host: 127.0.0.1
+      port: 8500
