@@ -11,6 +11,6 @@ public class SealController {
     @GetMapping("/seal")
     public String equals() {
         log.info("this is test for server.");
-        return "This is a seal project1.";
+        return "This is a seal project2.";
     }
 }

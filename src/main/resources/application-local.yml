@@ -1,5 +1,5 @@
 server:
-  port: 8081
+  port: 8082
 spring:
   application:
     name: seal-service
@@ -9,9 +9,9 @@ spring:
         health-check-path: /actuator/health #检测实例健康
         health-check- interval: 10s
         #每隔1es检查
-        hostname: 1.12.229.23
+        hostname: localhost
         #配置实例地址
         register: true # 自动注册
         service-name: ${spring.application.name} #实例名称
-      host: 1.12.229.23
+      host: localhost
       port: 8500

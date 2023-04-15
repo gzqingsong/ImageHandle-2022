@@ -1,0 +1,209 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      style="height: 100%;">
+<head>
+    <meta charset="utf-8"/>
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Microsoft YaHei;
+        }
+
+        .main-wrap {
+            width: 670px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .info-wrap {
+            font-size: 14px;
+        }
+
+        .h3 {
+            color: #000;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .h4 {
+            font-weight: bold;
+            color: #000;
+            font-size: 16px;
+            padding-top: 20px;
+        }
+
+        .table-bor {
+            width: 100%;
+            margin-top: 20px;
+            page-break-inside: avoid;
+        }
+
+        .table-bor table {
+            width: 100%;
+            border: 1px solid #000000;
+            border-collapse: collapse;
+        }
+
+        .table-bor table th {
+            border: 1px solid #000000;
+            padding: 6px;
+            background: #f2f2f2;
+            font-size: 14px;
+        }
+
+        .table-bor table td {
+            border: 1px solid #000000;
+            padding: 6px;
+            font-size: 14px;
+        }
+        .mt20 {
+            margin-top: 40px;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .statement_c {
+            line-height: 40px;
+            margin-bottom: 50px;
+            font-size: 14px;
+        }
+
+        .statement_tip {
+            line-height: 40px;
+            border: 1px solid #000000;
+            font-size: 14px;
+            padding: 10px;
+        }
+
+        .companyName {
+            font-size: 40px;
+        }
+
+        .p1 {
+            font-size: 30px;
+        }
+
+        tr {
+            width: 605px;
+        }
+    </style>
+</head>
+<body>
+<div class="main-wrap">
+
+    <div class="info-wrap mt20" style="height: 950px;">
+        <div id="top" style="padding-top: 80px;">
+        </div>
+        <br/><br/>
+        <div id="middle" style="text-align: center;">
+            <p class="companyName" style="font-family: Microsoft YaHei" th:text="${companyName}"></p>
+        </div>
+        <br/>
+        <div id="footer" style="text-align: center;">
+            <p class="p1">pdf</p>
+            <p class="p1">pdf</p>
+            <p class="p1">pdf</p>
+            <p class="p1">pdf</p>
+            <p class="p1">pdf</p>
+            <p class="p1">pdf</p>
+            <p class="p1">生成工具</p>
+            <br/>
+            <p class="p2">生成时间：<span th:text="${generateDate}"></span></p>
+            <p id="p3" class="p3"></p>
+        </div>
+    </div>
+
+    <div class="info-wrap mt20" style="height: 950px;">
+        <h3 class="h3" style="text-align: center; font-size: 30px;">声明</h3>
+        <div class="statement_c">
+            1、pdf声明<br/>
+            2、pdf声明<br/>
+            3、pdf声明<br/>
+            4、pdf声明<br/>
+            5、pdf声明pdf声明<br/>
+        </div>
+        <div class="statement_tip">
+            　　pdf声明pdf声明<br/><br/>
+
+            　　pdf声明pdf声明
+        </div>
+    </div>
+
+    <div class="info-wrap mt20">
+        <div><h3 class="h3">1.综合概述</h3></div>
+        <div>
+            <span class="red">
+                    综合概述综合概述综合概述综合概述综合概述综合概述综合概述综合概述综合概述综合概述综合概述综合概述
+                综合概述综合概述综合概述综合概述综合概述综合概述综合概述
+            </span>
+        </div>
+    </div>
+
+    <div class="info-wrap mt20">
+        <div><h3 class="h3">2.基本信息</h3></div>
+        <div><h4 class="h4">2.1.基本信息1</h4></div>
+        <div class="table-bor">
+            基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1
+            基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1基本信息1
+        </div>
+
+        <div><h4 class="h4">2.2.基本信息2</h4></div>
+
+        <div class="table-bor">基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2
+            基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2基本信息2
+        </div>
+        <div><h4 class="h4">2.3.基本信息3</h4></div>
+
+        <div class="table-bor">基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3
+            基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3基本信息3
+        </div>
+        <div><h4 class="h4">2.4.基本信息4</h4></div>
+        <div class="table-bor">基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4
+            基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4基本信息4
+        </div>
+        <div><h4 class="h4">2.5.基本信息5</h4></div>
+
+        <div class="table-bor">基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+        </div>
+
+        <div><h4 class="h4">2.6.基本信息6</h4></div>
+
+        <div class="table-bor">基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+        </div>
+
+        <div><h4 class="h4">2.7.基本信息7</h4></div>
+
+        <div class="table-bor">基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+        </div>
+
+        <div><h4 class="h4">2.8.基本信息8</h4></div>
+
+        <div class="table-bor">基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+            基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5基本信息5
+        </div>
+    </div>
+</div>
+</body>
+</html>
