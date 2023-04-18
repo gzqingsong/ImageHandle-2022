@@ -1,7 +1,7 @@
-package com.pdftool.enums;
+package com.example.imagehandle2022.seal.enums;
 
 public enum HtmlTemplateEnum {
-    REPORT_CREDIT_BASE("/pdftemp/base_temp.html","测试模板地址");
+    REPORT_CREDIT_BASE_TEST("/pdftemp/base_temp.html","测试模板地址");
 
     private String localUrl;
 

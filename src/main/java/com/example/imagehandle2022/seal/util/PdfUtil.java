@@ -19,7 +19,10 @@ import com.itextpdf.layout.property.Property;
 import com.itextpdf.layout.property.TabAlignment;
 import com.itextpdf.layout.property.TextAlignment;
 import com.itextpdf.text.pdf.BaseFont;
+import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
 
@@ -29,6 +32,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import com.example.imagehandle2022.seal.util.CharConvertHtmlUtil;
 
 
 /**
@@ -36,8 +40,10 @@ import java.util.Map;
  * @Author: juny
  * @CreateDate: 2020-12-09 15:57
  */
+@Component
 @Slf4j
 public class PdfUtil {
+
 
     /**
      * html转为pdf
@@ -50,7 +56,12 @@ public class PdfUtil {
         try {
             String ttcPath = basepath + "static"+File.separator; // 字体路径
             ITextRenderer renderer = new ITextRenderer();
-            //renderer.setDocumentFromString(htmlContent);
+            //renderer.setDocumentFromString(htmlContent);//ITextRenderer renderer = new ITextRenderer();
+            new CharConvertHtmlUtil().char2Html(htmlContent,"test");
+            String path = "src/main/resources/template";
+            File htmlFile = new File(path+ "/" + "test" + ".html");
+            renderer.setDocument(htmlFile); //Put your html string in a .html file renderer.layout();renderer.createPDF(os);
+            //renderer.layout();//renderer.createPDF(os);
             ITextFontResolver fontResolver = renderer.getFontResolver(); //中文支持
             fontResolver.addFont(ttcPath+"msyh.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//微软雅黑
             //fontResolver.addFont(ttcPath+"msyhbd.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//微软雅黑-字体加粗支持
@@ -105,8 +116,8 @@ public class PdfUtil {
         //PdfFont font = PdfFontFactory.createFont("F:\\syx\\syx_credit_api_platform\\credit-admin\\admin-starter\\src\\main\\resources\\static\\simsun.ttc"+",0", PdfEncodings.IDENTITY_H, false);
         PdfFont font = PdfFontFactory.createTtcFont(fontPath,0, PdfEncodings.IDENTITY_H, false,true);
         String catalogTitle = "目录";
-        document.add(new Paragraph(new Text(catalogTitle))
-                .setTextAlignment(TextAlignment.CENTER).setFont(font));
+        //document.add(new Paragraph(new Text(catalogTitle))
+                //.setTextAlignment(TextAlignment.CENTER).setFont(font));
         // 获取目录页数
         int catalogPage = catalogs.size() % 30 > 0 ? catalogs.size() / 30 + 1 : catalogs.size() / 30;
         // 如果当前页数catalogPage大于1 则添加空白目录页catalogPage-1页
@@ -168,7 +179,7 @@ public class PdfUtil {
         // 首页的说明页添加到新文档
         log.info("将原始页的首页和说明页添加到新的pdf页面作为首页和说明页");
         newPdfDoc.addPage(1, firstSourcePdf.getPage(1).copyTo(newPdfDoc));
-        newPdfDoc.addPage(2, firstSourcePdf.getPage(2).copyTo(newPdfDoc));
+        //newPdfDoc.addPage(2, firstSourcePdf.getPage(2).copyTo(newPdfDoc));
         log.info("遍历新的pdf文件，设置说明页和目录页 页眉、页码，添加水印");
         for (int i = 0; i < newPdfDoc.getNumberOfPages()-1; i++) {
             PdfPage page = newPdfDoc.getPage(i + 2);
@@ -177,8 +188,8 @@ public class PdfUtil {
             if (i==0){
                 log.info("首页添加二维码图片",reportNumber);
                 PdfCanvasUtil.setORImage(newPdfDoc.getPage(i + 1),reportNumber,or);
-                log.info("添加logo");
-                PdfCanvasUtil.setLogo(newPdfDoc.getPage(i + 1),basePath);
+                //log.info("添加logo");
+               // PdfCanvasUtil.setLogo(newPdfDoc.getPage(i + 1),basePath);
             }
             // 设置说明页和目录页 页眉、页码
             log.info("开始设置页眉、页码,当前页:{}",i+2);
@@ -189,6 +200,72 @@ public class PdfUtil {
             // 添加背景图片
             log.info("开始添加水印，当前页:{}",i+2);
             PdfCanvasUtil.setWatermark(canvas,pageSize,font,i+2,document,waterName);
+        }
+        firstSourcePdf.close();
+        document.close();
+        newPdfDoc.close();
+        return targetFile;
+    }
+
+    /**
+     * 生成一个带有目录(可跳转)的pdf文件(支持中文).
+     *
+     * @param sourceFile 源pdf文件
+     * @param targetFile 处理后的pdf文件
+     * @param catalogs   目录数据map<标题,目录等级> 一级和二级
+     * @param fontPath   使用字体
+     * @param reportNumber   报告编码
+     * @return targetFile
+     * @throws IOException
+     */
+    public static String createPdf(String sourceFile, String targetFile,
+                                              String fontPath, String reportNumber,
+                                              LinkedHashMap<String, Integer> catalogs,
+                                              String or,String basePath,String waterName) throws IOException {
+        File file = new File(targetFile);
+        if (!file.getParentFile().exists()){
+            file.getParentFile().mkdirs();
+        }
+        // 读取原始pdf
+        log.info("开始获取原始pdf文件");
+        PdfReader pdfReader = new PdfReader(sourceFile);
+        PdfDocument firstSourcePdf = new PdfDocument(pdfReader);
+        int numberOfPages = firstSourcePdf.getNumberOfPages();
+        log.info("原始pdf文件成功，文件总页数：{}",numberOfPages);
+        //创建新的pdf文件
+        log.info("开始创建新的pdf文件");
+        PdfDocument newPdfDoc = new PdfDocument(new PdfWriter(targetFile));
+        Document document = new Document(newPdfDoc);
+        document.setMargins(40,20,40,20);
+        //PdfFont font = PdfFontFactory.createFont("F:\\syx\\syx_credit_api_platform\\credit-admin\\admin-starter\\src\\main\\resources\\static\\simsun.ttc"+",0", PdfEncodings.IDENTITY_H, false);
+        PdfFont font = PdfFontFactory.createTtcFont(fontPath,0, PdfEncodings.IDENTITY_H, false,true);
+
+        // 计算出声明页+目录页总页码
+        int startPageNumber = 1;
+        // 遍历原始pdf文件，从第三页开始，首页和说明页不遍历，后面单独加入
+        log.info("遍历原始pdf文件，从正文开始，设置页眉，页码等信息，并保存到新的pdf文件中");
+        // 首页的说明页添加到新文档
+        log.info("将原始页的首页和说明页添加到新的pdf页面作为首页和说明页");
+        newPdfDoc.addPage(1, firstSourcePdf.getPage(1).copyTo(newPdfDoc));
+        //newPdfDoc.addPage(2, firstSourcePdf.getPage(2).copyTo(newPdfDoc));
+        log.info("遍历新的pdf文件，设置说明页和目录页 页眉、页码，添加水印");
+        for (int i = 0; i < newPdfDoc.getNumberOfPages(); i++) {
+            PdfPage page = newPdfDoc.getPage(i + 1);
+            Rectangle pageSize = page.getPageSize();
+            PdfCanvas canvas = new PdfCanvas(page);
+            if (i==0){
+                log.info("首页添加二维码图片",reportNumber);
+                PdfCanvasUtil.setORImage(newPdfDoc.getPage(i + 1),reportNumber,or);
+            }
+            // 设置说明页和目录页 页眉、页码
+            log.info("开始设置页眉、页码,当前页:{}",i);
+            if (i<startPageNumber) {
+                PdfCanvasUtil.setHeader(canvas, pageSize, font);
+                PdfCanvasUtil.setPageNumber(canvas, pageSize, i + 1);
+            }
+            // 添加背景图片
+            log.info("开始添加水印，当前页:{}",i+1);
+            PdfCanvasUtil.setWatermark(canvas,pageSize,font,i+1,document,waterName);
         }
         firstSourcePdf.close();
         document.close();

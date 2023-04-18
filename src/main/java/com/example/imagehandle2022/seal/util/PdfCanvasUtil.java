@@ -37,11 +37,11 @@ public class PdfCanvasUtil {
     public static void setHeader(PdfCanvas canvas, Rectangle pageSize, PdfFont font) throws IOException {
         canvas.beginText().setFontAndSize(font, 10)
                 .moveText(10, pageSize.getHeight() - 15)
-                .showText("pdf生成工具")
+                .showText("广州开放大学")
                 .endText();
         canvas.beginText().setFontAndSize(font, 10)
                 .moveText(pageSize.getWidth() - 120, pageSize.getHeight() - 15)
-                .showText("联系电话：023-123456789")
+                .showText("联系电话：020-83481387")
                 .endText();
         //设置横线
         canvas.setStrokeColor(Color.DARK_GRAY)
@@ -112,13 +112,13 @@ public class PdfCanvasUtil {
         Rectangle pageSize = page.getPageSize();
         PdfCanvas canvas = new PdfCanvas(page);
         ImageData imageData = ImageDataFactory.create(or);
-        canvas.addImage(imageData,pageSize.getWidth()-100-50,pageSize.getHeight()-100-50,false);
-        if (!Strings.isNullOrEmpty(text)) {
-            canvas.beginText().setFontAndSize(PdfFontFactory.createFont(FontConstants.HELVETICA), 10)
-                    .moveText(pageSize.getWidth()-100-50, pageSize.getHeight()-100-50-10)
-                    .showText(text)
-                    .endText();
-        }
+        canvas.addImage(imageData,pageSize.getWidth()-100-25,pageSize.getHeight()-100-25,false);
+//        if (!Strings.isNullOrEmpty(text)) {
+//            canvas.beginText().setFontAndSize(PdfFontFactory.createFont(FontConstants.HELVETICA), 6)
+//                    .moveText(pageSize.getWidth()-100-25, pageSize.getHeight()-100-25-6)
+//                    .showText(text)
+//                    .endText();
+//        }
     }
 
     /**
