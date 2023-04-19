@@ -253,10 +253,10 @@ public class PdfUtil {
             PdfPage page = newPdfDoc.getPage(i + 1);
             Rectangle pageSize = page.getPageSize();
             PdfCanvas canvas = new PdfCanvas(page);
-            if (i==0){
-                log.info("首页添加二维码图片",reportNumber);
-                PdfCanvasUtil.setORImage(newPdfDoc.getPage(i + 1),reportNumber,or);
-            }
+//            if (i==0){
+//                log.info("首页添加二维码图片",reportNumber);
+//                PdfCanvasUtil.setORImage(newPdfDoc.getPage(i + 1),reportNumber,or);
+//            }
             // 设置说明页和目录页 页眉、页码
             log.info("开始设置页眉、页码,当前页:{}",i);
             if (i<startPageNumber) {

@@ -11,7 +11,6 @@
             padding: 0;
             font-family: Microsoft YaHei;
         }
-
         .main-wrap {
             width: 670px;
             margin: 0 auto;
@@ -97,35 +96,19 @@
 <div class="main-wrap">
 
     <div class="info-wrap mt20" style="height: 950px;">
-        <div id="top" style="padding-top: 80px;">
+        <div id="top" style="padding-top: 110px;">
         </div>
         <br/><br/>
-        <div id="middle" style="text-align: center;">
-            <p class="companyName" style="font-family: Microsoft YaHei" th:text="${companyName}"></p>
-        </div>
+<!--        <div id="company" style="text-align: center;">-->
+<!--            <p class="p1" style="font-family: SimSun" th:text="${certificateType}"></p>-->
+<!--        </div>-->
         <br/>
         <div id="footer" style="text-align: center;">
-            <p class="p1"></p>
-            <p class="p1"></p>
-            <p class="p1"></p>
+            <p class="p1" style="font-family: SimSun" th:text="${certificateType}"></p>
+            <br/><br/>
             <p class="p1">     同学，学号：         性别：    ，      级，专业：         </p>
-            <p class="p1"></p>
-            <p class="p1"></p>
-            <p class="p1"> </p>
-            <p class="p1"> </p>
-            <p class="p1"> </p>
-            <p class="p1"> </p>
             <br/>
             <p id="p3" class="p3"></p>
-        </div>
-        <div id="certificate" style="text-align: left;">
-            <p class="companyName" style="font-family: Microsoft YaHei" th:text="特此证明"></p>
-        </div>
-        <div id="company" style="text-align: right;">
-            <p class="p1" style="font-family: SimSun" th:text="${companyName}"></p>
-        </div>
-        <div id="date" style="text-align: right;">
-            <p class="p1" style="font-family: SimSun" th:text="${generateDate}"></p>
         </div>
     </div>
 </div>

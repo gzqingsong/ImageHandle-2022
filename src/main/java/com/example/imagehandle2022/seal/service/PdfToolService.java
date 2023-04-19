@@ -59,12 +59,13 @@ public class PdfToolService {
         // 新pdf地址
         String targetFile = tempPath + File.separator + pdfNumber + ".pdf";
         String fontPath = basepath + "static" + File.separator + "simsun.ttc";
+        String fontPathTitle = basepath + "static" + File.separator + "DFST-M8.ttc";
         // 二维码图片内容
         String content = "蓝威龙，2144101207936，申请时间：20230118 14：24：34";
         try {
             QRCodeUtils.encodeToPath(content, 65, 65, "png", new File(orImgPath).getPath());
             // 生成新的pdf
-            PdfUtil.createPdf(sourceFile, targetFile, fontPath, pdfNumber, this.catalogs(), orImgPath, basepath, "广州开放大学");
+            PdfUtil.createPdf(sourceFile, targetFile, fontPath, pdfNumber, this.catalogs(), "", basepath, "");
             log.info("pdf文件生成成功，文件地址为:"+targetFile);
         }catch (Exception e){
             log.info("pdf生成出错，错误信息："+e.getMessage());
@@ -92,7 +93,8 @@ public class PdfToolService {
      */
     private Map<String, Object> htmlParam(){
         Map<String, Object> param = Maps.newHashMap();
-        param.put("companyName", "在 籍 证 明");
+        param.put("companyName", "广州市广播电视大学教务处");
+        param.put("certificateType", "在读证明");
         param.put("generateDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         return param;
     }

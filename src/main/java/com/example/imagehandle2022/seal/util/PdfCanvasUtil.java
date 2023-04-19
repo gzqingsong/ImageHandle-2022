@@ -35,19 +35,19 @@ public class PdfCanvasUtil {
      * @throws IOException
      */
     public static void setHeader(PdfCanvas canvas, Rectangle pageSize, PdfFont font) throws IOException {
-        canvas.beginText().setFontAndSize(font, 10)
-                .moveText(10, pageSize.getHeight() - 15)
-                .showText("广州开放大学")
+        canvas.beginText().setFontAndSize(font, 28)
+                .moveText(120, pageSize.getHeight() - 60)
+                .showText("广州市广播电视大学教务处")
                 .endText();
-        canvas.beginText().setFontAndSize(font, 10)
-                .moveText(pageSize.getWidth() - 120, pageSize.getHeight() - 15)
-                .showText("联系电话：020-83481387")
-                .endText();
+//        canvas.beginText().setFontAndSize(font, 10)
+//                .moveText(pageSize.getWidth() - 120, pageSize.getHeight() - 15)
+//                .showText("联系电话：020-83481387")
+//                .endText();
         //设置横线
-        canvas.setStrokeColor(Color.DARK_GRAY)
-                .setLineWidth(.2f)
-                .moveTo(0, pageSize.getHeight() - 20)
-                .lineTo(pageSize.getWidth(), pageSize.getHeight() - 20).stroke();
+        canvas.setStrokeColor(Color.RED)
+                .setLineWidth(4)
+                .moveTo(60, pageSize.getHeight() - 90)
+                .lineTo(pageSize.getWidth()-60, pageSize.getHeight() - 90).stroke();
     }
 
     /**
