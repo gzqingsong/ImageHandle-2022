@@ -36,7 +36,7 @@ public class PdfCanvasUtil {
      */
     public static void setHeader(PdfCanvas canvas, Rectangle pageSize, PdfFont font) throws IOException {
         canvas.beginText().setFontAndSize(font, 28)
-                .moveText(120, pageSize.getHeight() - 60)
+                .moveText(120, pageSize.getHeight() - 120)
                 .showText("广州市广播电视大学教务处")
                 .endText();
 //        canvas.beginText().setFontAndSize(font, 10)
@@ -46,8 +46,8 @@ public class PdfCanvasUtil {
         //设置横线
         canvas.setStrokeColor(Color.RED)
                 .setLineWidth(4)
-                .moveTo(60, pageSize.getHeight() - 90)
-                .lineTo(pageSize.getWidth()-60, pageSize.getHeight() - 90).stroke();
+                .moveTo(60, pageSize.getHeight() - 150)
+                .lineTo(pageSize.getWidth()-60, pageSize.getHeight() - 150).stroke();
     }
 
     /**
