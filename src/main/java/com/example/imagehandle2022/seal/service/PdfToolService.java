@@ -1,5 +1,6 @@
 package com.example.imagehandle2022.seal.service;
 
+import com.example.imagehandle2022.entity.StudentInfo;
 import com.google.common.collect.Maps;
 import com.example.imagehandle2022.seal.enums.HtmlTemplateEnum;
 import com.example.imagehandle2022.seal.util.PdfUtil;
@@ -17,7 +18,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import com.example.imagehandle2022.seal.util.CharConvertHtmlUtil;
 
 /**
  * @Description:
@@ -38,7 +38,9 @@ public class PdfToolService {
      * @param request
      */
     public void generatePdf(HttpServletResponse response, HttpServletRequest request){
-        Map<String, Object> param = htmlParam();
+
+        String infoBody=getStudentInfo(response,request);
+        Map<String, Object> param = htmlParam(infoBody);
         log.info("获取到模板内容，开始渲染html模板");
         WebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale());
         ctx.setVariables(param);
@@ -91,11 +93,12 @@ public class PdfToolService {
      * 获取渲染页面参数
      * @return
      */
-    private Map<String, Object> htmlParam(){
+    private Map<String, Object> htmlParam(String infobody){
         Map<String, Object> param = Maps.newHashMap();
         param.put("companyName", "广州市广播电视大学教务处");
         param.put("certificateType", "在读证明");
         param.put("generateDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
+        param.put("studentInfo",infobody);
         return param;
     }
 
@@ -110,5 +113,32 @@ public class PdfToolService {
 //        catalogs.put("2.基本信息", 1);
 //        catalogs.put("2.1.基本信息1", 2);
         return catalogs;
+    }
+
+    /**
+     * Getting student info.
+     * @param response
+     * @param request
+     * @return
+     */
+    private String getStudentInfo(HttpServletResponse response, HttpServletRequest request){
+        StudentInfo studentInfo=new StudentInfo();
+        studentInfo.setStudentId("2144101255211");
+        studentInfo.setSex("男");
+        studentInfo.setEducation("本科");
+        studentInfo.setStuMajor("机械CAD");
+        studentInfo.setMonthDate("3");
+        studentInfo.setYearDate("2021");
+        studentInfo.setStuCardNo("342222199901362584");
+        studentInfo.setStuName("孙作峰");
+
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(studentInfo.getStuName());
+        stringBuilder.append("（学号");
+        stringBuilder.append(studentInfo.getStudentId()+"，身份证号"+studentInfo.getStuCardNo()+"），"+studentInfo.getSex()+"，于"+studentInfo.getYearDate()+"年"+
+                studentInfo.getMonthDate()+"月至今在我校参加国家开放大学 "+studentInfo.getEducation()+" "+studentInfo.getStuMajor()+"专业学习。");
+
+
+        return stringBuilder.toString();
     }
 }
