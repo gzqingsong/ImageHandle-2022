@@ -99,6 +99,9 @@ public class PdfToolService {
         param.put("certificateType", "在读证明");
         param.put("generateDate", new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
         param.put("studentInfo",infobody);
+        param.put("proof","特此证明");
+        param.put("applyDate", new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+
         return param;
     }
 

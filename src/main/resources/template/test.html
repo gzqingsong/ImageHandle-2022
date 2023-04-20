@@ -89,6 +89,9 @@
         tr {
             width: 605px;
         }
+        .kge {
+            text-indent:4em
+        }
     </style>
 </head>
 <body>
@@ -97,17 +100,28 @@
     <div class="info-wrap mt20" style="height: 950px;">
         <div id="top" style="padding-top: 110px;">
         </div>
-        <br/><br/>
+        <br/>
 <!--        <div id="company" style="text-align: center;">-->
 <!--            <p class="p1" style="font-family: SimSun" th:text="${certificateType}"></p>-->
 <!--        </div>-->
-        <br/>
         <div id="footer" style="text-align: center;">
             <p class="p1">在读证明</p>
-            <br/><br/>
+<!--            <br/>-->
+<!--            <p class="p1" th:text="${studentInfo}"></p>-->
+<!--            <br/>-->
+            <p id="p3" class="p3"></p>
+        </div>
+        <div id="body" class="kge" style="text-align: left;">
             <p class="p1">孙作峰（学号2144101255211，身份证号342222199901362584），男，于2021年3月至今在我校参加国家开放大学 本科 机械CAD专业学习。</p>
             <br/>
-            <p id="p3" class="p3"></p>
+        </div>
+        <div id="proof" class="kge">
+            <p class="p1">特此证明</p>
+            <br/>
+        </div>
+        <div id="date" style="text-align: right;">
+            <p class="p1">广州市广播电视大学教务处</p>
+            <p class="p1">2023-04-20</p>
         </div>
     </div>
 </div>
