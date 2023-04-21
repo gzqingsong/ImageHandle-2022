@@ -23,8 +23,10 @@ import lombok.extern.java.Log;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.xhtmlrenderer.pdf.ITextFontResolver;
 import org.xhtmlrenderer.pdf.ITextRenderer;
+import java.lang.String;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,19 +58,16 @@ public class PdfUtil {
         try {
             String ttcPath = basepath + "static"+File.separator; // 字体路径
             ITextRenderer renderer = new ITextRenderer();
-            //renderer.setDocumentFromString(htmlContent);//ITextRenderer renderer = new ITextRenderer();
-            new CharConvertHtmlUtil().char2Html(htmlContent,"test");
             String path = "src/main/resources/template";
-            File htmlFile = new File(path+ "/" + "test" + ".html");
-            renderer.setDocument(htmlFile); //Put your html string in a .html file renderer.layout();renderer.createPDF(os);
-            //renderer.layout();//renderer.createPDF(os);
+            renderer.setDocumentFromString(htmlContent);
             ITextFontResolver fontResolver = renderer.getFontResolver(); //中文支持
-            fontResolver.addFont(ttcPath+"msyh.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//微软雅黑
+            //fontResolver.addFont(ttcPath+"msyh.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//微软雅黑
             //fontResolver.addFont(ttcPath+"msyhbd.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//微软雅黑-字体加粗支持
-            //fontResolver.addFont(ttcPath+"simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//宋体
+            fontResolver.addFont(ttcPath+"simsun.ttc", BaseFont.IDENTITY_H, BaseFont.NOT_EMBEDDED);//宋体
             // 解决图片的相对路径问题
-            String imppath = (new File(basepath)).toURI().toURL().toString();
-            renderer.getSharedContext().setBaseURL(imppath);
+            //String imppath = (new File(basepath)).toURI().toURL().toString();
+            //renderer.getSharedContext().setBaseURL(imppath);
+
             renderer.layout();
             long nowTime = System.currentTimeMillis();// 获得当前系统时间序号
             String pdfTempFile = tempPath + File.separator + nowTime + ".pdf";
@@ -239,6 +238,7 @@ public class PdfUtil {
         document.setMargins(40,20,40,20);
         //PdfFont font = PdfFontFactory.createFont("F:\\syx\\syx_credit_api_platform\\credit-admin\\admin-starter\\src\\main\\resources\\static\\simsun.ttc"+",0", PdfEncodings.IDENTITY_H, false);
         PdfFont font = PdfFontFactory.createTtcFont(fontPath,0, PdfEncodings.IDENTITY_H, false,true);
+        //PdfFont font = PdfFontFactory.createFont(fontPath);
 
         // 计算出声明页+目录页总页码
         int startPageNumber = 1;
@@ -271,5 +271,48 @@ public class PdfUtil {
         document.close();
         newPdfDoc.close();
         return targetFile;
+    }
+
+    /**
+
+     * 将字符串的编码格式转换为utf-8
+
+     *
+
+     * @param str
+
+     * @return Name = new
+
+     * String(Name.getBytes("ISO-8859-1"), "utf-8");
+
+     */
+
+    public static String toUTF8(String str) {
+
+        if (StringUtils.isEmpty(str)) {
+            return "";
+        }
+        try {
+            if (str.equals(new String(str.getBytes("GB2312"), "GB2312"))) {
+                str = new String(str.getBytes("GB2312"), "utf-8");
+                return str;
+            }
+        } catch (Exception exception) {
+        }
+        try {
+            if (str.equals(new String(str.getBytes("ISO-8859-1"), "ISO-8859-1"))) {
+                str = new String(str.getBytes("ISO-8859-1"), "utf-8");
+                return str;
+            }
+        } catch (Exception exception1) {
+        }
+        try {
+            if (str.equals(new String(str.getBytes("GBK"), "GBK"))) {
+                str = new String(str.getBytes("GBK"), "utf-8");
+                return str;
+            }
+        } catch (Exception exception3) {
+        }
+        return str;
     }
 }

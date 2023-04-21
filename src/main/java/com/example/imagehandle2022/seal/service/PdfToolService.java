@@ -61,13 +61,13 @@ public class PdfToolService {
         // 新pdf地址
         String targetFile = tempPath + File.separator + pdfNumber + ".pdf";
         String fontPath = basepath + "static" + File.separator + "simsun.ttc";
-        String fontPathTitle = basepath + "static" + File.separator + "DFST-M8.ttc";
+        String fontPathTitle = basepath + "static" + File.separator + "msyhbd.ttc";
         // 二维码图片内容
         String content = "蓝威龙，2144101207936，申请时间：20230118 14：24：34";
         try {
             QRCodeUtils.encodeToPath(content, 65, 65, "png", new File(orImgPath).getPath());
             // 生成新的pdf
-            PdfUtil.createPdf(sourceFile, targetFile, fontPath, pdfNumber, this.catalogs(), "", basepath, "");
+            PdfUtil.createPdf(sourceFile, targetFile, fontPathTitle, pdfNumber, this.catalogs(), "", basepath, "");
             log.info("pdf文件生成成功，文件地址为:"+targetFile);
         }catch (Exception e){
             log.info("pdf生成出错，错误信息："+e.getMessage());
