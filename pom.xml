@@ -57,6 +57,11 @@
 			<artifactId>javase</artifactId>
 			<version>3.3.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.bouncycastle</groupId>
+			<artifactId>bcpkix-jdk15on</artifactId>
+			<version>1.47</version>
+		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>com.itextpdf</groupId>-->
 <!--			<artifactId>itext-pdfa</artifactId>-->
