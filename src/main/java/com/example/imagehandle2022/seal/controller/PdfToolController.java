@@ -1,13 +1,13 @@
 package com.example.imagehandle2022.seal.controller;
 
-import com.example.imagehandle2022.seal.service.PdfToolService;
+import com.example.imagehandle2022.seal.impl.PdfToolServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.example.imagehandle2022.seal.service.SignPDFService;
+import com.example.imagehandle2022.seal.impl.SignPDFServiceImpl;
 
 /**
  * @Description:
@@ -19,16 +19,21 @@ import com.example.imagehandle2022.seal.service.SignPDFService;
 public class PdfToolController {
 
     @Autowired
-    PdfToolService pdfToolService;
+    PdfToolServiceImpl pdfToolService;
     @Autowired
-    SignPDFService signPDFService;
+    SignPDFServiceImpl signPDFService;
 
-    @RequestMapping("/test")
-    public void test(HttpServletResponse response, HttpServletRequest request){
+    /**
+     * This method generate PDF file with html.
+     * @param response
+     * @param request
+     */
+    @RequestMapping("/generate-pdf")
+    public void generatePdf(HttpServletResponse response, HttpServletRequest request){
         pdfToolService.generatePdf(response,request);
     }
 
-    @RequestMapping("/sign")
+    @RequestMapping("/sign-pdf")
     public void signPDF(HttpServletResponse response, HttpServletRequest request){
         signPDFService.signPdf(response,request);
     }
