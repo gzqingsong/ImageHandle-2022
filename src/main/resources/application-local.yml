@@ -15,3 +15,7 @@ spring:
         service-name: ${spring.application.name} #实例名称
       host: localhost
       port: 8500
+pkpath: D:\GZKF\code\pdf-services\src/main/resources/bhl.p12
+srcPDFPath: D:\GZKF\pdf\PDFtest.pdf
+sealStudyingImagePath: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png
+signedPDFPath: D:\GZKF\pdf\signedStudyingCertificate.pdf
