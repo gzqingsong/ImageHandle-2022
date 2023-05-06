@@ -4,7 +4,8 @@ import com.example.imagehandle2022.entity.StudentDO;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface ExcelDBService {
-    void insertDB(StudentDO studentDO);
+    int insertDB(List<StudentDO> studentDOList);
 }
