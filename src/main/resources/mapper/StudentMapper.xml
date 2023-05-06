@@ -31,7 +31,11 @@
     </resultMap>
 
     <insert id="insertStudentList" parameterType="List">
-        insert into student (studentId,studentName,cardId,cardType,entryDate,genderCode,birthday,nationCode,examineeNumber,studentStatusCode,studentTypeCode,academyCode,academy,centerCode,center,classCode,className,majorLevelCode,majorLevel,majorCode,major)
+        insert into student (studentId,studentName,cardId,cardType,entryDate,
+                             genderCode,gender,birthday,nationCode,examineeNumber,
+                             phoneNumber,studentStatusCode,studentStatus,studentTypeCode,studentType,
+                             academyCode,academy,centerCode,center,classCode,
+                             className,majorLevelCode,majorLevel,majorCode,major)
         <foreach collection="list" open="values" item="item" separator=",">
             (
             #{item.studentId},

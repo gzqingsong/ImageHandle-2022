@@ -23,9 +23,9 @@ public class ExcelController {
         studentDO.setStudentName("刘虎");
         studentDO.setCardId("413026200012287512");
         studentDO.setCardType("身份证");
-        studentDO.setEntryDate("2018春季");
+        studentDO.setEntryDate("2018.03");
         studentDO.setGenderCode("1");
-        studentDO.setGender("男");
+        studentDO.setGender("n");
         studentDO.setBirthday("1988.07.12");
         studentDO.setNationCode("01");
         studentDO.setExamineeNumber("01");
@@ -36,8 +36,8 @@ public class ExcelController {
         studentDO.setStudentType("開放");
         studentDO.setAcademyCode("44191");
         studentDO.setAcademy("直属学院");
-        studentDO.setCenterCode("");
-        studentDO.setCenter("");
+        studentDO.setCenterCode("44191");
+        studentDO.setCenter("直属学院");
         studentDO.setClassCode("184419101014060");
         studentDO.setClassName("18春工商企专S班(高新)");
         studentDO.setMajorLevelCode("4");
