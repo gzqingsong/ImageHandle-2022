@@ -22,8 +22,8 @@ spring:
     #driver-class-name: com.mysql.jdbc.Driver 这个驱动已经被弃用
     driver-class-name: com.mysql.cj.jdbc.Driver
   mybatis:
-    mapper-locations: classpath:mapping/*Mapping.xml
-    type-aliases-package: com.example.entity
+    mapper-locations: classpath:mapping/*Mapper.xml
+    type-aliases-package: com.example.imagehandle2022.entity
 pkpath: D:\GZKF\code\pdf-services\src/main/resources/bhl.p12
 srcPDFPath: D:\GZKF\pdf\PDFtest.pdf
 sealStudyingImagePath: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png
