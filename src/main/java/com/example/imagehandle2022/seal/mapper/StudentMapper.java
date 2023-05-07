@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface StudentMapper {
     int insertStudentList(List<StudentDO> studentDOList);
+    StudentDO queryStudent(String studentId);
 }
