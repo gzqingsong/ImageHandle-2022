@@ -1,21 +1,26 @@
 package com.example.imagehandle2022.seal.controller;
 
 import com.example.imagehandle2022.entity.StudentDO;
+import com.example.imagehandle2022.seal.impl.ExcelServiceImpl;
 import com.example.imagehandle2022.seal.service.IExcelDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @RequestMapping
 @RestController
 public class ExcelController {
     @Autowired
     IExcelDBService excelDBService;
+    @Autowired
+    ExcelServiceImpl excelService;
 
     @RequestMapping("/insert-db")
     public int insertDB(){
@@ -67,4 +72,12 @@ public class ExcelController {
 
         return studentDO;
     }
+
+    @PostMapping("/uploadExcel")
+    public boolean uploadExcel(@RequestParam("file") MultipartFile file){
+        List<Map<String,String>> list = excelService.uploadExcel(file);
+
+        return false;    //Result是一个专门返回参数的静态类
+    }
+
 }
