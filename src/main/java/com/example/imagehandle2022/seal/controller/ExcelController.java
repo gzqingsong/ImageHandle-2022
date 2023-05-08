@@ -1,7 +1,7 @@
 package com.example.imagehandle2022.seal.controller;
 
 import com.example.imagehandle2022.entity.StudentDO;
-import com.example.imagehandle2022.seal.service.ExcelDBService;
+import com.example.imagehandle2022.seal.service.IExcelDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,7 +13,7 @@ import java.util.List;
 @RestController
 public class ExcelController {
     @Autowired
-    ExcelDBService excelDBService;
+    IExcelDBService excelDBService;
 
     @RequestMapping("/insert-db")
     public int insertDB(){

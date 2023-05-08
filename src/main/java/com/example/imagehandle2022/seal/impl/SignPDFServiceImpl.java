@@ -1,7 +1,7 @@
 package com.example.imagehandle2022.seal.impl;
 
 import com.example.imagehandle2022.constant.Constant;
-import com.example.imagehandle2022.seal.service.SignPDFService;
+import com.example.imagehandle2022.seal.service.ISignPDFService;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
@@ -27,7 +27,7 @@ import java.security.cert.Certificate;
  */
 @Service
 @Slf4j
-public class SignPDFServiceImpl implements SignPDFService {
+public class SignPDFServiceImpl implements ISignPDFService {
 
     @Value("${srcPDFPath}")
     private String srcPDFPath;

@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
-import com.example.imagehandle2022.seal.service.PdfToolService;
+import com.example.imagehandle2022.seal.service.IPdfToolService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +27,7 @@ import java.util.Map;
  */
 @Service
 @Slf4j
-public class PdfToolServiceImpl implements PdfToolService {
+public class PdfToolServiceImpl implements IPdfToolService {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
