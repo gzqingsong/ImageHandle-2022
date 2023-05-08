@@ -5,4 +5,5 @@ import java.util.List;
 
 public interface IExcelDBService {
     int insertDB(List<StudentDO> studentDOList);
+    StudentDO queryStudent(String studentId);
 }

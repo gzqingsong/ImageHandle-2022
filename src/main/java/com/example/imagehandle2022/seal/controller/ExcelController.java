@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,5 +52,19 @@ public class ExcelController {
         studentDOList.add(studentDO);
 
         return excelDBService.insertDB(studentDOList);
+    }
+
+    /**
+     * Query student info with student id.
+     * @param response
+     * @param request
+     * @return
+     */
+    @RequestMapping("/query-student")
+    public StudentDO queryStudent(HttpServletResponse response, HttpServletRequest request){
+        String studentid=request.getHeader("gzou-student-id");
+        StudentDO studentDO=excelDBService.queryStudent(studentid);
+
+        return studentDO;
     }
 }

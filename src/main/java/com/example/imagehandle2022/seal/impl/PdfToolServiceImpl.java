@@ -1,10 +1,12 @@
 package com.example.imagehandle2022.seal.impl;
 
+import com.example.imagehandle2022.entity.StudentDO;
 import com.example.imagehandle2022.entity.StudentInfo;
 import com.google.common.collect.Maps;
 import com.example.imagehandle2022.seal.enums.HtmlTemplateEnum;
 import com.example.imagehandle2022.seal.util.PdfUtil;
 import com.example.imagehandle2022.seal.util.QRCodeUtils;
+import com.spire.ms.System.Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import com.example.imagehandle2022.seal.service.IPdfToolService;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -31,6 +34,8 @@ public class PdfToolServiceImpl implements IPdfToolService {
 
     @Autowired
     private SpringTemplateEngine templateEngine;
+    @Autowired
+    private ExcelDBServiceImpl excelService;
 
     /**
      * 渲染html文件
@@ -72,6 +77,8 @@ public class PdfToolServiceImpl implements IPdfToolService {
             log.info("pdf文件生成成功，文件地址为:"+targetFile);
         }catch (Exception e){
             log.info("pdf生成出错，错误信息："+e.getMessage());
+        }catch (IOException e){
+            log.info("pdf文件生成失败: "+e.getMessage());
         }finally {
             // 删除创建的临时文件
             File file = new File(sourceFile);
@@ -127,14 +134,19 @@ public class PdfToolServiceImpl implements IPdfToolService {
      */
     private String getStudentInfo(HttpServletResponse response, HttpServletRequest request){
         StudentInfo studentInfo=new StudentInfo();
-        studentInfo.setStudentId("2144101255211");
-        studentInfo.setSex("男");
-        studentInfo.setEducation("本科");
-        studentInfo.setStuMajor("机械CAD");
-        studentInfo.setMonthDate("3");
-        studentInfo.setYearDate("2021");
-        studentInfo.setStuCardNo("342222199901362584");
-        studentInfo.setStuName("孙作峰");
+        String studentid=request.getHeader("gzou-student-id");
+        if(studentid.isEmpty()){
+            throw new Exception("学号不能为空");
+        }
+        StudentDO studentDO= excelService.queryStudent(studentid);
+        studentInfo.setStudentId(studentDO.getStudentId());
+        studentInfo.setSex(studentDO.getGender());
+        studentInfo.setEducation(studentDO.getMajorLevel());
+        studentInfo.setStuMajor(studentDO.getMajor());
+        studentInfo.setMonthDate(studentDO.getEntryDate().substring(5,6));
+        studentInfo.setYearDate(studentDO.getEntryDate().substring(0,3));
+        studentInfo.setStuCardNo(studentDO.getCardId());
+        studentInfo.setStuName(studentDO.getStudentName());
 
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(studentInfo.getStuName());

@@ -72,7 +72,7 @@
     </insert>
 
     <select id="queryStudent" resultType="StudentDO">
-        select * from student where id = #{studentId}
+        select * from student where studentId = #{studentId}
     </select>
 
 </mapper>
