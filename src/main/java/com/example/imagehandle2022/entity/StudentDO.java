@@ -13,6 +13,8 @@ public class StudentDO {
     private String studentName;
     private String cardId;
     private String cardType;
+    private String branchCode;
+    private String branchName;
     private String entryDate;
     private String genderCode;
     private String gender;

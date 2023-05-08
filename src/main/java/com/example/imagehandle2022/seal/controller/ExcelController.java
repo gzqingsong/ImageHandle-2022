@@ -22,6 +22,8 @@ public class ExcelController {
         studentDO.setStudentId("1844101413363");
         studentDO.setStudentName("刘虎");
         studentDO.setCardId("413026200012287512");
+        studentDO.setBranchCode("0001");
+        studentDO.setBranchName("广州开放大学");
         studentDO.setCardType("身份证");
         studentDO.setEntryDate("2018.03");
         studentDO.setGenderCode("1");

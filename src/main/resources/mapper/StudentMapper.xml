@@ -7,6 +7,8 @@
         <result column="studentName" jdbcType="VARCHAR" property="studentName" />
         <result column="cardId" jdbcType="VARCHAR" property="cardId" />
         <result column="cardType" jdbcType="VARCHAR" property="cardType" />
+        <result column="branchCode" jdbcType="VARCHAR" property="branchCode" />
+        <result column="branchName" jdbcType="VARCHAR" property="branchName" />
         <result column="entryDate" jdbcType="VARCHAR" property="entryDate" />
         <result column="genderCode" jdbcType="CHAR" property="genderCode" />
         <result column="gender" jdbcType="VARCHAR" property="gender" />
@@ -31,7 +33,7 @@
     </resultMap>
 
     <insert id="insertStudentList" parameterType="List">
-        insert into student (studentId,studentName,cardId,cardType,entryDate,
+        insert into student (studentId,studentName,cardId,cardType,branchCode,branchName,entryDate,
                              genderCode,gender,birthday,nationCode,examineeNumber,
                              phoneNumber,studentStatusCode,studentStatus,studentTypeCode,studentType,
                              academyCode,academy,centerCode,center,classCode,
@@ -42,6 +44,8 @@
             #{item.studentName},
             #{item.cardId},
             #{item.cardType},
+            #{item.branchCode},
+            #{item.branchName},
             #{item.entryDate},
             #{item.genderCode},
             #{item.gender},
