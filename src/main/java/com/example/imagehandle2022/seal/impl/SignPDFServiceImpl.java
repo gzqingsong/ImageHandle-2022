@@ -71,6 +71,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
             signInfo.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
 
             String srcPDFFile = srcPDFPath + File.separator + studentid + ".pdf";
+            log.info("pdf文件原地址为: "+srcPDFFile);
             inputStream = new FileInputStream(srcPDFFile);
             ByteArrayOutputStream tempArrayOutputStream = new ByteArrayOutputStream();
             PdfReader reader = new PdfReader(inputStream);
@@ -118,8 +119,9 @@ public class SignPDFServiceImpl implements ISignPDFService {
             outputStream = new FileOutputStream(new File(targetPDFPathFile));
             outputStream.write(result.toByteArray());
             outputStream.flush();
+            log.info("pdf文件签章成功，文件地址为:"+targetPDFPathFile);
         } catch (Exception e) {
-            e.printStackTrace();
+            log.info("pdf文件签章失败: "+e.getMessage());
         } finally {
             try {
                 if (null != outputStream) {
