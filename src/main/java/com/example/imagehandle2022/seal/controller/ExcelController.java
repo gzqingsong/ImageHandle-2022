@@ -34,7 +34,7 @@ public class ExcelController {
         studentDO.setCardType("身份证");
         studentDO.setEntryDate("2018.03");
         studentDO.setGenderCode("1");
-        studentDO.setGender("n");
+        studentDO.setGender("男");
         studentDO.setBirthday("1988.07.12");
         studentDO.setNationCode("01");
         studentDO.setExamineeNumber("01");

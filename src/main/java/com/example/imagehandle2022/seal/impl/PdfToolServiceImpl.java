@@ -9,6 +9,7 @@ import com.example.imagehandle2022.seal.util.QRCodeUtils;
 import com.spire.ms.System.Exception;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.SpringTemplateEngine;
@@ -36,6 +37,8 @@ public class PdfToolServiceImpl implements IPdfToolService {
     private SpringTemplateEngine templateEngine;
     @Autowired
     private ExcelDBServiceImpl excelService;
+    @Value("${generatePath}")
+    private String generatePath;
 
     /**
      * 渲染html文件
@@ -46,6 +49,7 @@ public class PdfToolServiceImpl implements IPdfToolService {
     public void generatePdf(HttpServletResponse response, HttpServletRequest request){
 
         String infoBody=getStudentInfo(response,request);
+        String studentid=request.getHeader("gzou-student-id");
         Map<String, Object> param = htmlParam(infoBody);
         log.info("获取到模板内容，开始渲染html模板");
         WebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale());
@@ -65,7 +69,7 @@ public class PdfToolServiceImpl implements IPdfToolService {
         // 二维码图片地址
         String orImgPath = tempPath + File.separator + pdfNumber + ".png";
         // 新pdf地址
-        String targetFile = tempPath + File.separator + pdfNumber + ".pdf";
+        String targetFile = generatePath + File.separator + studentid + ".pdf";
         String fontPath = basepath + "static" + File.separator + "simsun.ttc";
         String fontPathTitle = basepath + "static" + File.separator + "msyhbd.ttc";
         // 二维码图片内容
@@ -143,8 +147,8 @@ public class PdfToolServiceImpl implements IPdfToolService {
         studentInfo.setSex(studentDO.getGender());
         studentInfo.setEducation(studentDO.getMajorLevel());
         studentInfo.setStuMajor(studentDO.getMajor());
-        studentInfo.setMonthDate(studentDO.getEntryDate().substring(5,6));
-        studentInfo.setYearDate(studentDO.getEntryDate().substring(0,3));
+        studentInfo.setMonthDate(studentDO.getEntryDate().substring(5,7));
+        studentInfo.setYearDate(studentDO.getEntryDate().substring(0,4));
         studentInfo.setStuCardNo(studentDO.getCardId());
         studentInfo.setStuName(studentDO.getStudentName());
 

@@ -50,6 +50,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
         FileOutputStream outputStream = null;
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         try {
+            String studentid=request.getHeader("gzou-student-id");
             KeyStore ks = KeyStore.getInstance(Constant.PKCS12);
             ks.load(new FileInputStream(pkpath), Constant.PASSWORD);
             String alias = ks.aliases().nextElement();
@@ -69,7 +70,8 @@ public class SignPDFServiceImpl implements ISignPDFService {
             signInfo.setImagePath(sealStudyingImagePath);
             signInfo.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
 
-            inputStream = new FileInputStream(srcPDFPath);
+            String srcPDFFile = srcPDFPath + File.separator + studentid + ".pdf";
+            inputStream = new FileInputStream(srcPDFFile);
             ByteArrayOutputStream tempArrayOutputStream = new ByteArrayOutputStream();
             PdfReader reader = new PdfReader(inputStream);
             // 创建签章工具PdfStamper ，最后一个boolean参数是否允许被追加签名
@@ -112,7 +114,8 @@ public class SignPDFServiceImpl implements ISignPDFService {
             // 定义输入流为生成的输出流内容，以完成多次签章的过程
             result = tempArrayOutputStream;
 
-            outputStream = new FileOutputStream(new File(targetPDFPath));
+            String targetPDFPathFile = targetPDFPath + File.separator +Constant.SIGNED_STUDYING_CERTIFICATE+ studentid + ".pdf";
+            outputStream = new FileOutputStream(new File(targetPDFPathFile));
             outputStream.write(result.toByteArray());
             outputStream.flush();
         } catch (Exception e) {
