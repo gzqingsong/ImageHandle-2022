@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.imagehandle2022.seal.mapper.StudentMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.imagehandle2022.entity.SchoolSealInfo">
+        <result column=" school" jdbcType="VARCHAR" property=" school" />
+        <result column="schoolCode" jdbcType="VARCHAR" property="schoolCode" />
+        <result column="sealName" jdbcType="VARCHAR" property="sealName" />
+        <result column="sealCode" jdbcType="VARCHAR" property="sealCode" />
+        <result column="sealPath" jdbcType="VARCHAR" property="sealPath" />
+        <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
+    </resultMap>
+
+    <insert id="insertSchoolSealInfo" parameterType="SchoolSealInfo">
+        insert into seal (school,schoolCode,sealName,sealCode,sealPath,applyDate)
+        values(
+            #{school},
+            #{schoolCode},
+            #{sealName},
+            #{sealCode},
+            #{sealPath},
+            #{applyDate}
+              )
+    </insert>
+
+    <select id="querySchoolSealInfo" resultType="SchoolSealInfo">
+        select * from seal where schoolCode = #{schoolCode} and sealCode = #{sealCode}
+    </select>
+
+</mapper>
