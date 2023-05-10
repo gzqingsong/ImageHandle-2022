@@ -19,12 +19,24 @@
             #{sealName},
             #{sealCode},
             #{sealPath},
-            #{applyDate}
+            new()
               )
     </insert>
 
     <select id="querySchoolSealInfo" resultType="SchoolSealInfo">
-        select * from seal where schoolCode = #{schoolCode} and sealCode = #{sealCode}
+        select * from seal where 1=1
+            <if test="schoolCode != null and schoolCode != ''">
+                and schoolCode =  #{schoolCode}
+            </if>
+            <if test="sealCode != null and sealCode != ''">
+                and sealCode =  #{sealCode}
+            </if>
+            <if test="schoolName != null and schoolName != ''">
+                and schoolName =  #{schoolName}
+            </if>
+            <if test="sealName != null and sealName != ''">
+                and sealName =  #{sealName}
+            </if>
     </select>
 
 </mapper>

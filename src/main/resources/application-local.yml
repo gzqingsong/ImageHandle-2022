@@ -29,3 +29,4 @@ srcPDFPath: D:\GZKF\pdf\
 sealStudyingImagePath: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png
 signedPDFPath: D:\GZKF\pdf\
 generatePath: D:\GZKF\pdf\
+sealBasePath: D:\GZKF\seal\
