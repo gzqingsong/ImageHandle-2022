@@ -33,7 +33,7 @@ public class SealApplyController {
      * @param request
      * @return
      */
-    @RequestMapping("/query-seal-info")
+    @RequestMapping("/query-seal-apply-info")
     public SealApplyInfo querySealInfo(HttpServletRequest request){
         String sealCode=request.getHeader("gzou-seal-code");
         String schoolCode=request.getHeader("gzou-school-code");
@@ -50,7 +50,7 @@ public class SealApplyController {
      * @param request
      * @return
      */
-    @PostMapping("/insert-seal-info")
+    @PostMapping("/insert-seal-apply-info")
     public int insertSealInfo(HttpServletRequest request, @Valid @RequestBody SealApplyInfo sealApplyInfo){
         String sealCode=request.getHeader("gzou-seal-code");
         String schoolCode=request.getHeader("gzou-school-code");
