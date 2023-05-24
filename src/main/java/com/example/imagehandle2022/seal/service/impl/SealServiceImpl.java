@@ -16,13 +16,12 @@ public class SealServiceImpl implements ISealService {
 
     /**
      * Query scholl and corresponding seal with school and sealCode.
-     * @param school
-     * @param sealCode
+     * @param schoolSealInfo
      * @return
      */
     @Override
-    public SchoolSealInfo querySchoolSealInfo(String school, String sealCode){
-        return schoolSealMapper.querySchoolSealInfo(school,sealCode);
+    public SchoolSealInfo querySchoolSealInfo(SchoolSealInfo schoolSealInfo){
+        return schoolSealMapper.querySchoolSealInfo(schoolSealInfo);
     }
 
 

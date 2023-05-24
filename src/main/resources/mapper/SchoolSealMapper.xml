@@ -43,8 +43,8 @@
             <if test="sealCode != null and sealCode != ''">
                 and sealCode =  #{sealCode}
             </if>
-            <if test="schoolName != null and schoolName != ''">
-                and schoolName =  #{schoolName}
+            <if test="school != null and school != ''">
+                and school =  #{school}
             </if>
             <if test="sealName != null and sealName != ''">
                 and sealName =  #{sealName}

@@ -27,15 +27,18 @@ public class SealController {
     }
     /**
      * Query seal and it's path info with seal code and school code.
-     * @param response
+     * @param
      * @param request
      * @return
      */
     @RequestMapping("/query-seal-info")
-    public SchoolSealInfo querySealInfo(HttpServletResponse response, HttpServletRequest request){
+    public SchoolSealInfo querySealInfo( HttpServletRequest request){
         String sealCode=request.getHeader("gzou-seal-code");
         String schoolCode=request.getHeader("gzou-school-code");
-        SchoolSealInfo schoolSealInfo=sealService.querySchoolSealInfo(schoolCode,sealCode);
+        SchoolSealInfo schoolSealInfoReq=new SchoolSealInfo();
+        schoolSealInfoReq.setSealCode(sealCode);
+        schoolSealInfoReq.setSchoolCode(schoolCode);
+        SchoolSealInfo schoolSealInfo=sealService.querySchoolSealInfo(schoolSealInfoReq);
 
         return schoolSealInfo;
     }

@@ -58,6 +58,9 @@ public class SignPDFServiceImpl implements ISignPDFService {
             String studentid=request.getHeader("gzou-student-id");
             String sealCode=request.getHeader("gzou-seal-code");
             String schoolCode=request.getHeader("gzou-school-code");
+            SchoolSealInfo schoolSealInfoReq=new SchoolSealInfo();
+            schoolSealInfoReq.setSealCode(sealCode);
+            schoolSealInfoReq.setSchoolCode(schoolCode);
             KeyStore ks = KeyStore.getInstance(Constant.PKCS12);
             ks.load(new FileInputStream(pkpath), Constant.PASSWORD);
             String alias = ks.aliases().nextElement();
@@ -74,7 +77,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
             signInfo.setDigestAlgorithm(DigestAlgorithms.SHA1);
             signInfo.setFieldName("demo");
             // 签章图片
-            SchoolSealInfo schoolSealInfo=sealService.querySchoolSealInfo(schoolCode,sealCode);
+            SchoolSealInfo schoolSealInfo=sealService.querySchoolSealInfo(schoolSealInfoReq);
             if(null!=schoolSealInfo){
                 signInfo.setImagePath(schoolSealInfo.getSealPath());
             }else{
@@ -127,7 +130,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
             // 定义输入流为生成的输出流内容，以完成多次签章的过程
             result = tempArrayOutputStream;
 
-            String targetPDFPathFile = targetPDFPath + File.separator +Constant.SIGNED_STUDYING_CERTIFICATE+ studentid + ".pdf";
+            String targetPDFPathFile = targetPDFPath + File.separator +sealCode+ studentid + ".pdf";
             outputStream = new FileOutputStream(new File(targetPDFPathFile));
             outputStream.write(result.toByteArray());
             outputStream.flush();

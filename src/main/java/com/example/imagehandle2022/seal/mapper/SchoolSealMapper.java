@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface SchoolSealMapper {
-    SchoolSealInfo querySchoolSealInfo(String school, String sealCode);
+    SchoolSealInfo querySchoolSealInfo(SchoolSealInfo schoolSealInfo);
     int insertSchoolSealInfo(SchoolSealInfo schoolSealInfo);
 
     int insertSealApplyInfo(SealApplyInfo sealApplyInfo);

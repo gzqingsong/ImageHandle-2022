@@ -24,7 +24,10 @@ public class RegisterServiceImpl implements IRegisterService {
 
     @Override
     public void register(UploadInfo uploadInfo) throws Exception{
-        SchoolSealInfo schoolSealInfoResp=sealService.querySchoolSealInfo(uploadInfo.getSchoolName(),uploadInfo.getSealName());
+        SchoolSealInfo schoolSealInfoQuery=new SchoolSealInfo();
+        schoolSealInfoQuery.setSealName(uploadInfo.getSealName());
+        schoolSealInfoQuery.setSchool(uploadInfo.getSchoolName());
+        SchoolSealInfo schoolSealInfoResp=sealService.querySchoolSealInfo(schoolSealInfoQuery);
         if(!StringUtils.isEmpty(schoolSealInfoResp.getSchool())&&!StringUtils.isEmpty(schoolSealInfoResp.getSealName())){
             throw new Exception("注册重复数据");
         }
