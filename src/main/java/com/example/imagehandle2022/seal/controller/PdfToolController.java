@@ -1,13 +1,13 @@
 package com.example.imagehandle2022.seal.controller;
 
-import com.example.imagehandle2022.seal.impl.PdfToolServiceImpl;
+import com.example.imagehandle2022.seal.service.impl.PdfToolServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import com.example.imagehandle2022.seal.impl.SignPDFServiceImpl;
+import com.example.imagehandle2022.seal.service.impl.SignPDFServiceImpl;
 
 /**
  * @Description:

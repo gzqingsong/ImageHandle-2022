@@ -26,7 +26,9 @@ mybatis:
   type-aliases-package: com.example.imagehandle2022.entity
 pkpath: D:\GZKF\code\pdf-services\src/main/resources/bhl.p12
 srcPDFPath: D:\GZKF\pdf\
-sealStudyingImagePath: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png
+sealImagePath:
+  0001: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png
+  0002: D:\GZKF\code
 signedPDFPath: D:\GZKF\pdf\
 generatePath: D:\GZKF\pdf\
 sealBasePath: D:\GZKF\seal\

@@ -12,6 +12,8 @@ import java.io.File;
 @AllArgsConstructor
 public class UploadInfo {
     private String schoolName;
+    private String schoolCode;
+    private String sealCode;
     private String sealName;
     private File file;
     private Image image;

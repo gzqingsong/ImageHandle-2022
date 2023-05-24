@@ -1,7 +1,7 @@
 package com.example.imagehandle2022.seal.controller;
 
 import com.example.imagehandle2022.entity.StudentDO;
-import com.example.imagehandle2022.seal.impl.ExcelServiceImpl;
+import com.example.imagehandle2022.seal.service.impl.ExcelServiceImpl;
 import com.example.imagehandle2022.seal.service.IExcelDBService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

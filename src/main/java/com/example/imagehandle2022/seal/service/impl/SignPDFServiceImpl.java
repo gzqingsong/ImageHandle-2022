@@ -1,6 +1,7 @@
-package com.example.imagehandle2022.seal.impl;
+package com.example.imagehandle2022.seal.service.impl;
 
 import com.example.imagehandle2022.constant.Constant;
+import com.example.imagehandle2022.seal.service.ISealService;
 import com.example.imagehandle2022.seal.service.ISignPDFService;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
@@ -9,9 +10,11 @@ import com.itextpdf.text.pdf.PdfSignatureAppearance;
 import com.itextpdf.text.pdf.PdfStamper;
 import com.itextpdf.text.pdf.security.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import com.example.imagehandle2022.entity.SignatureInfo;
+import com.example.imagehandle2022.entity.SchoolSealInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -19,6 +22,8 @@ import java.io.*;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.Certificate;
+import java.util.*;
+
 
 /**
  * @Description: Sign PDF document with seal.
@@ -37,8 +42,8 @@ public class SignPDFServiceImpl implements ISignPDFService {
     @Value("${signedPDFPath}")
     private String targetPDFPath;
 
-    @Value("${sealStudyingImagePath}")
-    private String sealStudyingImagePath;
+    @Autowired
+    private ISealService sealService;
 
     /**
      * Sign PDF method with seal.
@@ -51,6 +56,8 @@ public class SignPDFServiceImpl implements ISignPDFService {
         ByteArrayOutputStream result = new ByteArrayOutputStream();
         try {
             String studentid=request.getHeader("gzou-student-id");
+            String sealCode=request.getHeader("gzou-seal-code");
+            String schoolCode=request.getHeader("gzou-school-code");
             KeyStore ks = KeyStore.getInstance(Constant.PKCS12);
             ks.load(new FileInputStream(pkpath), Constant.PASSWORD);
             String alias = ks.aliases().nextElement();
@@ -67,7 +74,12 @@ public class SignPDFServiceImpl implements ISignPDFService {
             signInfo.setDigestAlgorithm(DigestAlgorithms.SHA1);
             signInfo.setFieldName("demo");
             // 签章图片
-            signInfo.setImagePath(sealStudyingImagePath);
+            SchoolSealInfo schoolSealInfo=sealService.querySchoolSealInfo(schoolCode,sealCode);
+            if(null!=schoolSealInfo){
+                signInfo.setImagePath(schoolSealInfo.getSealPath());
+            }else{
+                throw new Exception("seal path is null");
+            }
             signInfo.setRenderingMode(PdfSignatureAppearance.RenderingMode.GRAPHIC);
 
             String srcPDFFile = srcPDFPath + File.separator + studentid + ".pdf";
@@ -120,6 +132,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
             outputStream.write(result.toByteArray());
             outputStream.flush();
             log.info("pdf文件签章成功，文件地址为:"+targetPDFPathFile);
+
         } catch (Exception e) {
             log.info("pdf文件签章失败: "+e.getMessage());
         } finally {

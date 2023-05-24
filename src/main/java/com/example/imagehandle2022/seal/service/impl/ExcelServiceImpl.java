@@ -1,4 +1,4 @@
-package com.example.imagehandle2022.seal.impl;
+package com.example.imagehandle2022.seal.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

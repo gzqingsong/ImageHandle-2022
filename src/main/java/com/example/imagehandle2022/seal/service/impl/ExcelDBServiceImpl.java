@@ -1,4 +1,4 @@
-package com.example.imagehandle2022.seal.impl;
+package com.example.imagehandle2022.seal.service.impl;
 
 import com.example.imagehandle2022.entity.StudentDO;
 import com.example.imagehandle2022.seal.mapper.StudentMapper;

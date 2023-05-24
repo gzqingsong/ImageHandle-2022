@@ -1,0 +1,48 @@
+create table student(
+    studentId varchar(13) NOT NULL,-- 学号
+    studentName varchar(10) NOT NULL,-- 姓名
+	cardId varchar(18) NOT NULL,-- 身份证号
+	branchCode varchar(4) NOT NULL,-- 学校代码
+	branchName varchar(20) NOT NULL,-- 学校名称
+	cardType varchar(3),-- 证件类型
+	entryDate varchar(8),-- 入学年度
+    genderCode char(1) NOT NULL,-- 性别代码
+	gender varchar(1) NOT NULL,-- 性别
+    birthday varchar(10),-- 生日
+	nationCode varchar(2),-- 民族代码
+	examineeNumber varchar(17),-- 考生号
+	phoneNumber varchar(11) NOT NULL,-- 手机号
+	studentStatusCode varchar(2) NOT NULL,-- 学籍状态码
+	studentStatus varchar(2) NOT NULL,-- 学籍状态
+	studentTypeCode varchar(2),-- 学生类别代码
+	studentType varchar(8),-- 学生类别
+	academyCode varchar(5) NOT NULL,-- 学院代码
+	academy varchar(15) NOT NULL,-- 学院
+	centerCode varchar(7) NOT NULL,-- 学习中心代码
+	center varchar(15) NOT NULL,-- 学习中心
+	classCode varchar(15),-- 班级代码
+	className varchar(35),-- 班级名称
+	majorLevelCode varchar(1) NOT NULL,-- 专业层次代码
+	majorLevel varchar(10) NOT NULL,-- 专业层次
+	majorCode varchar(8) NOT NULL,-- 专业名称代码
+	major varchar(20) NOT NULL-- 专业名称
+)DEFAULT CHARACTER SET=utf8;
+
+create table seal(
+    school varchar(20) NOT NULL,-- 学校
+	schoolCode varchar(4) NOT NULL,-- 学校代码
+	sealName varchar(20) NOT NULL,-- 签章名称
+	sealCode varchar(2) NOT NULL,-- 签章代码
+	sealPath varchar(60) NOT NULL,-- 签章存储路径
+	applyDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)DEFAULT CHARACTER SET=utf8;
+
+create table seal_apply_info(
+    applyId varchar(40) NOT NULL,-- 申请ID号
+	apply_person_id varchar(40) NOT NULL,-- 申请人ID号，学号或者身份证号
+	institutionCode varchar(4) NOT NULL,-- 机构代码
+	sealName varchar(20) NOT NULL,-- 签章名称
+	sealCode varchar(2) NOT NULL,-- 签章代码
+	applyDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)DEFAULT CHARACTER SET=utf8;
+
