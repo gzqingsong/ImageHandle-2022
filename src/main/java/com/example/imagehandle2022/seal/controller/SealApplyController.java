@@ -15,7 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
- * @Description:
+ * @Description: This class mainly includes two functionalities. One is inserting apply info to DB.
+ * Another one is querying apply info from DB.
  * @Author: Tong
  * @CreateDate: 2023-05-24
  */
@@ -25,15 +26,13 @@ import javax.validation.Valid;
 public class SealApplyController {
     @Autowired
     private IApplySealService applySealService;
-
     @Autowired
     private Environment env;
-
     @Autowired
     private ConmmonUtil conmmonUtil;
+
     /**
      * Query seal and it's path info with seal code and school code.
-     * @param
      * @param request
      * @return
      */
@@ -50,7 +49,6 @@ public class SealApplyController {
 
     /**
      * Query seal and it's path info with seal code and school code.
-     * @param
      * @param request
      * @return
      */
