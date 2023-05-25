@@ -1,0 +1,9 @@
+
+ports:
+  8081 seal/sign
+  8089 nginx
+  8084 zuul
+  8083 consumer
+  8082 API service
+
+Error codes:
