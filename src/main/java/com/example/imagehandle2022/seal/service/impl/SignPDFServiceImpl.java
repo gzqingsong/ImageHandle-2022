@@ -75,6 +75,7 @@ public class SignPDFServiceImpl implements ISignPDFService {
             //check response list and delete the month which date is over more than three months.
             List<SealApplyInfo> sealApplyInfoList=applySealService.querySealApplyInfoList(sealApplyInfo1);
             List<SealApplyInfo> sealApplyInfoListRes=conmmonUtil.filterSealApplyInfoList(sealApplyInfoList);
+            log.info("Request numbers are: "+sealApplyInfoListRes.size());
             if(sealApplyInfoListRes.size()>3){
                 throw new Exception("已超出使用次数！");
             }

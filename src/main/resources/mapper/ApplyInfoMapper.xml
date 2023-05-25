@@ -42,7 +42,7 @@
         </if>
     </select>
 
-    <select id="querySealApplyInfoList" parameterType="java.util.List" resultType="string">
+    <select id="querySealApplyInfoList" parameterType="java.util.List" resultType="SealApplyInfo">
         select * from seal_apply_info where 1=1
         <if test="applyId != null and applyId != ''">
             and applyId =  #{applyId}

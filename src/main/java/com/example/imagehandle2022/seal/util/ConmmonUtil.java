@@ -38,7 +38,7 @@ public class ConmmonUtil {
         Calendar c1=Calendar.getInstance();
         Calendar c2=Calendar.getInstance();
         c1.setTime(sdf.parse(date1));
-        c2.setTime(sdf.parse(date.toString()));
+        c2.setTime(sdf.parse(sdf.format(date)));
         int year =c2.get(Calendar.YEAR)-c1.get(Calendar.YEAR);
         //开始日期若小月结束日期
         if(year==0){
@@ -56,7 +56,7 @@ public class ConmmonUtil {
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
-        }).collect(Collectors.toList());
+        } ).collect(Collectors.toList());
 
         return list;
     }
