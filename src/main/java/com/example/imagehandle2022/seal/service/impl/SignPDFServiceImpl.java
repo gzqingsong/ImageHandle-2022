@@ -1,8 +1,11 @@
 package com.example.imagehandle2022.seal.service.impl;
 
 import com.example.imagehandle2022.constant.Constant;
+import com.example.imagehandle2022.entity.SealApplyInfo;
+import com.example.imagehandle2022.seal.service.IApplySealService;
 import com.example.imagehandle2022.seal.service.ISealService;
 import com.example.imagehandle2022.seal.service.ISignPDFService;
+import com.example.imagehandle2022.seal.util.ConmmonUtil;
 import com.itextpdf.text.Image;
 import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfReader;
@@ -17,7 +20,7 @@ import com.example.imagehandle2022.entity.SignatureInfo;
 import com.example.imagehandle2022.entity.SchoolSealInfo;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import com.google.gson.Gson;
 import java.io.*;
 import java.security.KeyStore;
 import java.security.PrivateKey;
@@ -41,16 +44,19 @@ public class SignPDFServiceImpl implements ISignPDFService {
 
     @Value("${signedPDFPath}")
     private String targetPDFPath;
-
     @Autowired
     private ISealService sealService;
+    @Autowired
+    private IApplySealService applySealService;
+    @Autowired
+    private ConmmonUtil conmmonUtil;
 
     /**
      * Sign PDF method with seal.
-     * @param response
+     * @param sealApplyInfo
      * @param request
      */
-    public void signPdf(HttpServletResponse response, HttpServletRequest request){
+    public void signPdf(HttpServletRequest request,SealApplyInfo sealApplyInfo){
         InputStream inputStream = null;
         FileOutputStream outputStream = null;
         ByteArrayOutputStream result = new ByteArrayOutputStream();
@@ -61,6 +67,17 @@ public class SignPDFServiceImpl implements ISignPDFService {
             SchoolSealInfo schoolSealInfoReq=new SchoolSealInfo();
             schoolSealInfoReq.setSealCode(sealCode);
             schoolSealInfoReq.setSchoolCode(schoolCode);
+
+            SealApplyInfo sealApplyInfo1= new SealApplyInfo();
+            sealApplyInfo1.setApply_person_id(studentid);
+            sealApplyInfo1.setSealCode(sealCode);
+            sealApplyInfo1.setInstitutionCode(schoolCode);
+            //check response list and delete the month which date is over more than three months.
+            List<SealApplyInfo> sealApplyInfoList=applySealService.querySealApplyInfoList(sealApplyInfo1);
+            List<SealApplyInfo> sealApplyInfoListRes=conmmonUtil.filterSealApplyInfoList(sealApplyInfoList);
+            if(sealApplyInfoListRes.size()>3){
+                throw new Exception("已超出使用次数！");
+            }
             KeyStore ks = KeyStore.getInstance(Constant.PKCS12);
             ks.load(new FileInputStream(pkpath), Constant.PASSWORD);
             String alias = ks.aliases().nextElement();
@@ -136,6 +153,11 @@ public class SignPDFServiceImpl implements ISignPDFService {
             outputStream.flush();
             log.info("pdf文件签章成功，文件地址为:"+targetPDFPathFile);
 
+            sealApplyInfo1.setApplyId(conmmonUtil.getApplyId(studentid));
+            sealApplyInfo1.setSealName(sealApplyInfo.getSealName());
+
+            applySealService.insertApplyInfo(sealApplyInfo1);
+            log.info("pdf文件签章成功，相关信息入库成功: "+new Gson().toJson(sealApplyInfo1));
         } catch (Exception e) {
             log.info("pdf文件签章失败: "+e.getMessage());
         } finally {

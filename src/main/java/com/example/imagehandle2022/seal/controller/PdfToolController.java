@@ -1,12 +1,17 @@
 package com.example.imagehandle2022.seal.controller;
 
+import com.example.imagehandle2022.entity.SealApplyInfo;
 import com.example.imagehandle2022.seal.service.impl.PdfToolServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+
 import com.example.imagehandle2022.seal.service.impl.SignPDFServiceImpl;
 
 /**
@@ -33,8 +38,8 @@ public class PdfToolController {
         pdfToolService.generatePdf(response,request);
     }
 
-    @RequestMapping("/sign-pdf")
-    public void signPDF(HttpServletResponse response, HttpServletRequest request){
-        signPDFService.signPdf(response,request);
+    @PostMapping("/sign-pdf")
+    public void signPDF(HttpServletRequest request, @Valid @RequestBody SealApplyInfo sealApplyInfo){
+        signPDFService.signPdf(request,sealApplyInfo);
     }
 }

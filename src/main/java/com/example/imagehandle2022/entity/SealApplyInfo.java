@@ -10,8 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 public class SealApplyInfo {
     private String applyId;
-    private String applyPersonId;
+    private String apply_person_id;
     private String institutionCode;
     private String sealName;
     private String sealCode;
+    private String applyDate;
 }

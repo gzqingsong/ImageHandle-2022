@@ -11,11 +11,11 @@
         <result column="applyDate" jdbcType="VARCHAR" property="applyDate" />
     </resultMap>
 
-    <insert id="insertSealApplyInfo" parameterType="SealApplyInfo">
+    <insert id="insertApplyInfo" parameterType="SealApplyInfo">
         insert into seal_apply_info (applyId,apply_person_id,institutionCode,sealName,sealCode,applyDate)
             value(
             #{applyId},
-            #{applyPersonId},
+            #{apply_person_id},
             #{institutionCode},
             #{sealName},
             #{sealCode},
@@ -24,6 +24,25 @@
     </insert>
 
     <select id="querySealApplyInfo" resultType="SealApplyInfo">
+        select * from seal_apply_info where 1=1
+        <if test="applyId != null and applyId != ''">
+            and applyId =  #{applyId}
+        </if>
+        <if test="apply_person_id != null and apply_person_id != ''">
+            and apply_person_id =  #{apply_person_id}
+        </if>
+        <if test="institutionCode != null and institutionCode != ''">
+            and institutionCode =  #{institutionCode}
+        </if>
+        <if test="sealName != null and sealName != ''">
+            and sealName =  #{sealName}
+        </if>
+        <if test="sealCode != null and sealCode != ''">
+            and sealCode =  #{sealCode}
+        </if>
+    </select>
+
+    <select id="querySealApplyInfoList" parameterType="java.util.List" resultType="string">
         select * from seal_apply_info where 1=1
         <if test="applyId != null and applyId != ''">
             and applyId =  #{applyId}
