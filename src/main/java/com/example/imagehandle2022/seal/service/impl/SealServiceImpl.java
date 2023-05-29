@@ -7,6 +7,7 @@ import com.example.imagehandle2022.seal.service.ISealService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 @Service
 @Slf4j
@@ -22,6 +23,16 @@ public class SealServiceImpl implements ISealService {
     @Override
     public SchoolSealInfo querySchoolSealInfo(SchoolSealInfo schoolSealInfo){
         return schoolSealMapper.querySchoolSealInfo(schoolSealInfo);
+    }
+
+    /**
+     * Query scholl list and corresponding seal with school and sealCode.
+     * @param schoolSealInfo
+     * @return
+     */
+    @Override
+    public List<SchoolSealInfo> querySchoolSealInfoList(SchoolSealInfo schoolSealInfo){
+        return schoolSealMapper.querySchoolSealInfoList(schoolSealInfo);
     }
 
 

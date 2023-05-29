@@ -51,4 +51,20 @@
             </if>
     </select>
 
+    <select id="querySchoolSealInfoList" parameterType="java.util.List" resultType="SchoolSealInfo">
+        select * from seal where 1=1
+        <if test="schoolCode != null and schoolCode != ''">
+            and schoolCode =  #{schoolCode}
+        </if>
+        <if test="sealCode != null and sealCode != ''">
+            and sealCode =  #{sealCode}
+        </if>
+        <if test="school != null and school != ''">
+            and school =  #{school}
+        </if>
+        <if test="sealName != null and sealName != ''">
+            and sealName =  #{sealName}
+        </if>
+    </select>
+
 </mapper>
