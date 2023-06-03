@@ -3,24 +3,30 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
+import java.security.*;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.X509EncodedKeySpec;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import sun.misc.BASE64Decoder;
 
+import org.bouncycastle.asn1.ASN1Sequence;
+import org.bouncycastle.asn1.pkcs.RSAPrivateKeyStructure;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.stereotype.Component;
+import sun.misc.BASE64Decoder;
+import org.springframework.core.env.Environment;
+
+
+@Component
 public class RSAEncryptUtil {
     /**
      * 私钥
@@ -30,6 +36,12 @@ public class RSAEncryptUtil {
      * 公钥
      */
     private RSAPublicKey publicKey;
+    @Value("${rsaPublicKey}")
+    private String rsaPublicKey;
+    @Value("${rsaPrivateKey}")
+    private String rsaPrivateKey;
+    @Autowired
+    private Environment environment;
     /**
      * 字节数据转字符串专用集合
      */
@@ -142,9 +154,13 @@ public class RSAEncryptUtil {
         try {
             BASE64Decoder base64Decoder= new BASE64Decoder();
             byte[] buffer= base64Decoder.decodeBuffer(privateKeyStr);
-            PKCS8EncodedKeySpec keySpec= new PKCS8EncodedKeySpec(buffer);
+            RSAPrivateKeyStructure asn1PrivKey = new RSAPrivateKeyStructure((ASN1Sequence) ASN1Sequence.fromByteArray(buffer));
+            RSAPrivateKeySpec rsaPrivKeySpec = new RSAPrivateKeySpec(asn1PrivKey.getModulus(), asn1PrivKey.getPrivateExponent());
+            //KeyFactory keyFactory= KeyFactory.getInstance("RSA");
+            //PrivateKey priKey= keyFactory.generatePrivate(rsaPrivKeySpec);
+//            PKCS8EncodedKeySpec keySpec= new PKCS8EncodedKeySpec(buffer);
             KeyFactory keyFactory= KeyFactory.getInstance("RSA");
-            this.privateKey= (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
+            this.privateKey= (RSAPrivateKey) keyFactory.generatePrivate(rsaPrivKeySpec);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此算法");
         } catch (InvalidKeySpecException e) {
@@ -169,7 +185,8 @@ public class RSAEncryptUtil {
         }
         Cipher cipher= null;
         try {
-            cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            //cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] output= cipher.doFinal(plainTextData);
             return output;
@@ -199,7 +216,7 @@ public class RSAEncryptUtil {
         }
         Cipher cipher= null;
         try {
-            cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] output= cipher.doFinal(cipherData);
             return output;
@@ -235,11 +252,27 @@ public class RSAEncryptUtil {
         return stringBuilder.toString();
     }
     public static void main(String[] args){
+//        SpringApplication app = new SpringApplication(RSAEncryptUtil.class);
+//        DefaultProfileUtil.addDefaultProfile(app);
+//        Environment env = app.run(args).getEnvironment();
+        String rsaPublicKey="MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDJfxfXOtxAdTHRpjrrUdfOcNg09DzLCodXOX23SAgKcz5Bc5ctsxq6pZ9gCUB8o0ULotI" +
+                "7KfoxqpQZ+KTd4V+j5w7V8SE3oWFDoAA2wzt8j0Zd1V09WkjQtm6BGeBRTcUxNHxW1zMazgAo85TQtSx+nfzzDlM14QtXp9/V6ibxYwIDAQAB";
+        String rsaPrivateKey="MIICWwIBAAKBgQDJfxfXOtxAdTHRpjrrUdfOcNg09DzLCodXOX23SAgKcz5Bc5ctsxq6pZ9gCUB8" +
+                "o0ULotI7KfoxqpQZ+KTd4V+j5w7V8SE3oWFDoAA2wzt8j0Zd1V09WkjQtm6BGeBRTcUxNHxW1zMazgAo85TQtSx" +
+                "+nfzzDlM14QtXp9/V6ibxYwIDAQABAoGANki/K4T4AYWRPmICTZNnCH7uQJXsKudTPvSGIfKN+ALEKu3xNKaj9NT" +
+                "Z8w2LCgkSeOgMq1PLy8Wg0L5j7ELjeNINyJP1cZ9ZydQNczNZqpZw4HyrqpzIAQpodBNjOtJWVBvijsz7NXUAtoWR" +
+                "PTlm0eUX8smKgzRKEvGap1DGLYECQQDyOFdvRMjY9NkXLUEAK++TpnzDG3x2rP14lYBBGiFT0mKK9nmMMU/ACJ3ts" +
+                "gHFYW8CEMwoP8ZbHKA/fFxDkxIJAkEA1PWololqa+0nLEVXavNHJxJ/Us47uIlp4jC3mTgeunuWX2v1bTI+WZ84WA" +
+                "N6dFD8pSzg7rLb/taZxpxqSiqTCwJAVVXWMARKwmzYwtqVqOrRt/ISyGY5nlHp5v68tbLwBOj9ALo/Lk39K8mdYi2" +
+                "xhAmEo3SpiJCXYGggaN12X/RDiQJANCM0tC5OdL/qAEe1wERxXhqEO5SsQGC8IJmGyadYtpU9Wn1G6AYOB8kYdUvc" +
+                "tg+B2zqiky4M+FY37c0rpJ7JwwJAD8mzDLELiqKaIX9M78XK1Je27FF31GBv4c1UW0Ye2cg5VNIv2mSVH/bkC1gEc" +
+                "vmNhWe4wwB3wSS1cL5Z5GndZA==";
+
         RSAEncryptUtil rsaEncrypt= new RSAEncryptUtil();
         //rsaEncrypt.genKeyPair();
         //加载公钥
         try {
-            rsaEncrypt.loadPublicKey(RSAEncryptUtil.DEFAULT_PUBLIC_KEY);
+            rsaEncrypt.loadPublicKey(rsaPublicKey);
             System.out.println("加载公钥成功");
         } catch (Exception e) {
             System.err.println(e.getMessage());
@@ -247,7 +280,7 @@ public class RSAEncryptUtil {
         }
         //加载私钥
         try {
-            rsaEncrypt.loadPrivateKey(RSAEncryptUtil.DEFAULT_PRIVATE_KEY);
+            rsaEncrypt.loadPrivateKey(rsaPrivateKey);
             System.out.println("加载私钥成功");
         } catch (Exception e) {
             System.err.println(e.getMessage());
