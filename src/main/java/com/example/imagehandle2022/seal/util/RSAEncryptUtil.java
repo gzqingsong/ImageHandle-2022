@@ -171,7 +171,8 @@ public class RSAEncryptUtil {
         }
         Cipher cipher= null;
         try {
-            cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            //cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             byte[] output= cipher.doFinal(plainTextData);
             return output;
@@ -201,7 +202,7 @@ public class RSAEncryptUtil {
         }
         Cipher cipher= null;
         try {
-            cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
+            cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             byte[] output= cipher.doFinal(cipherData);
             return output;
