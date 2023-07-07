@@ -11,16 +11,20 @@ import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.security.spec.X509EncodedKeySpec;
+import org.apache.commons.codec.binary.Base64;
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+
+import lombok.extern.slf4j.Slf4j;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 
 @Service
+@Slf4j
 public class RSAEncryptUtil {
     /**
      * 私钥
@@ -38,18 +42,29 @@ public class RSAEncryptUtil {
      * 获取私钥
      * @return 当前的私钥对象
      */
-    public RSAPrivateKey getPrivateKey() {
+    private RSAPrivateKey getPrivateKey() {
         return privateKey;
     }
     /**
      * 获取公钥
      * @return 当前的公钥对象
      */
-    public RSAPublicKey getPublicKey() {
+    private RSAPublicKey getPublicKey() {
         return publicKey;
     }
     @Value("${RSAPublicKeyPath}")
     private String RSAPublicKeyPath;
+    @Value("${RSAPrivateKeyPath}")
+    private String RSAPrivateKeyPath;
+
+    public RSAEncryptUtil(){
+        try {
+            loadKey();
+        }catch (Exception e){
+            log.error(e.getMessage());
+        }
+
+    }
     /**
      * 随机生成密钥对
      */
@@ -64,6 +79,11 @@ public class RSAEncryptUtil {
         KeyPair keyPair= keyPairGen.generateKeyPair();
         this.privateKey= (RSAPrivateKey) keyPair.getPrivate();
         this.publicKey= (RSAPublicKey) keyPair.getPublic();
+    }
+
+    private void loadKey() throws Exception{
+        loadPublicKey(new FileInputStream(RSAPublicKeyPath));
+        loadPrivateKey(new FileInputStream(RSAPrivateKeyPath));
     }
     /**
      * 从文件中输入流中加载公钥
@@ -85,16 +105,16 @@ public class RSAEncryptUtil {
             }
             loadPublicKey(sb.toString());
         } catch (IOException e) {
-            throw new Exception("公钥数据流读取错误");
+            throw new Exception("Stream of public key hits error when reading");
         } catch (NullPointerException e) {
-            throw new Exception("公钥输入流为空");
+            throw new Exception("Stream of public key is null");
         }
     }
 
     /**
-     * 从字符串中加载公钥
-     * @param publicKeyStr 公钥数据字符串
-     * @throws Exception 加载公钥时产生的异常
+     * Loading public key from string
+     * @param publicKeyStr
+     * @throws Exception
      */
     public void loadPublicKey(String publicKeyStr) throws Exception{
         try {
@@ -104,20 +124,20 @@ public class RSAEncryptUtil {
             X509EncodedKeySpec keySpec= new X509EncodedKeySpec(buffer);
             this.publicKey= (RSAPublicKey) keyFactory.generatePublic(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            throw new Exception("this algorithm can't be found");
         } catch (InvalidKeySpecException e) {
-            throw new Exception("公钥非法");
+            throw new Exception("illegal public key");
         } catch (IOException e) {
-            throw new Exception("公钥数据内容读取错误");
+            throw new Exception("Reading public key error");
         } catch (NullPointerException e) {
-            throw new Exception("公钥数据为空");
+            throw new Exception("Data of public key is null");
         }
     }
 
     /**
-     * 从文件中加载私钥
+     * Loading private key from file.
      * @param  in
-     * @return 是否成功
+     * @return void
      * @throws Exception
      */
     public void loadPrivateKey(InputStream in) throws Exception{
@@ -135,9 +155,9 @@ public class RSAEncryptUtil {
             }
             loadPrivateKey(sb.toString());
         } catch (IOException e) {
-            throw new Exception("私钥数据读取错误");
+            throw new Exception("Reading private key error.");
         } catch (NullPointerException e) {
-            throw new Exception("私钥输入流为空");
+            throw new Exception("The stream of private key is null.");
         }
     }
     public void loadPrivateKey(String privateKeyStr) throws Exception{
@@ -148,36 +168,36 @@ public class RSAEncryptUtil {
             KeyFactory keyFactory= KeyFactory.getInstance("RSA");
             this.privateKey= (RSAPrivateKey) keyFactory.generatePrivate(keySpec);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此算法");
+            throw new Exception("Can't be found algorithm");
         } catch (InvalidKeySpecException e) {
-            throw new Exception("私钥非法");
+            throw new Exception("Illegal private key.");
         } catch (IOException e) {
-            throw new Exception("私钥数据内容读取错误");
+            throw new Exception("Reading private key Exception.");
         } catch (NullPointerException e) {
-            throw new Exception("私钥数据为空");
+            throw new Exception("Private key is null.");
         }
     }
 
     /**
-     * 加密过程
-     * @param publicKey 公钥
-     * @param plainTextData 明文数据
+     * Encrypted String.
+     * @param
+     * @param plainTextData
      * @return
-     * @throws Exception 加密过程中的异常信息
+     * @throws Exception
      */
-    public byte[] encrypt(RSAPublicKey publicKey, byte[] plainTextData) throws Exception{
+    public String encrypt(String plainTextData) throws Exception{
         if(publicKey== null){
-            throw new Exception("加密公钥为空, 请设置");
+            throw new Exception("public key is null.");
         }
         Cipher cipher= null;
         try {
             //cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
             cipher= Cipher.getInstance("RSA");
-            cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            byte[] output= cipher.doFinal(plainTextData);
-            return output;
+            cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
+            byte[] output= cipher.doFinal(base64String2ByteFun(plainTextData));
+            return byte2Base64StringFun(output);
         } catch (NoSuchAlgorithmException e) {
-            throw new Exception("无此加密算法");
+            throw new Exception("The algorithm can't be found.");
         } catch (NoSuchPaddingException e) {
             e.printStackTrace();
             return null;
@@ -191,21 +211,21 @@ public class RSAEncryptUtil {
     }
     /**
      * 解密过程
-     * @param privateKey 私钥
+     * @param
      * @param cipherData 密文数据
      * @return 明文
      * @throws Exception 解密过程中的异常信息
      */
-    public byte[] decrypt(RSAPrivateKey privateKey, byte[] cipherData) throws Exception{
-        if (privateKey== null){
+    public String decrypt(String cipherData) throws Exception{
+        if (this.privateKey== null){
             throw new Exception("解密私钥为空, 请设置");
         }
         Cipher cipher= null;
         try {
             cipher= Cipher.getInstance("RSA");
-            cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            byte[] output= cipher.doFinal(cipherData);
-            return output;
+            cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
+            byte[] output= cipher.doFinal(base64String2ByteFun(cipherData));
+            return byte2Base64StringFun(output);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此解密算法");
         } catch (NoSuchPaddingException e) {
@@ -237,6 +257,16 @@ public class RSAEncryptUtil {
         }
         return stringBuilder.toString();
     }
+
+    //base64字符串转byte[]
+    public static byte[] base64String2ByteFun(String base64Str){
+        return Base64.decodeBase64(base64Str);
+    }
+    //byte[]转base64
+    public static String byte2Base64StringFun(byte[] b){
+        return Base64.encodeBase64String(b);
+    }
+
     public static void main(String[] args){
         String filePubKPath="D:\\GZKF\\code\\rsa_public_key.txt";
         String filePriKPath="D:\\GZKF\\code\\rsa_private_key.txt";
@@ -265,14 +295,13 @@ public class RSAEncryptUtil {
         String encryptStr= "Test String chaijunkun";
         try {
             //加密
-            byte[] cipher = rsaEncrypt.encrypt(rsaEncrypt.getPublicKey(), encryptStr.getBytes());
+            String cipher = rsaEncrypt.encrypt(encryptStr);
             //解密
-            byte[] plainText = rsaEncrypt.decrypt(rsaEncrypt.getPrivateKey(), cipher);
-            System.out.println("cipher text length:"+ cipher.length);
-            System.out.println(RSAEncryptUtil.byteArrayToString(cipher));
-            System.out.println("plainText length:"+ plainText.length);
-            System.out.println(RSAEncryptUtil.byteArrayToString(plainText));
-            System.out.println(new String(plainText));
+            String plainText = rsaEncrypt.decrypt(cipher);
+            log.info("cipher text length:"+ cipher.length());
+            log.info("plainText length:"+ plainText.length());
+            log.info("encrypted string: "+cipher);
+            log.info("decrypted string: "+plainText);
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
