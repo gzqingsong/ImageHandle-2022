@@ -25,6 +25,8 @@ mybatis:
   mapper-locations: classpath:mapper/*.xml
   type-aliases-package: com.example.imagehandle2022.entity
 pkpath: D:\GZKF\code\pdf-services\src/main/resources/bhl.p12
+RSAPrivateKeyPath: D:\GZKF\code/rsa_private_key.txt
+RSAPublicKeyPath: D:\GZKF\code/rsa_public_key.txt
 srcPDFPath: D:\GZKF\pdf\
 sealImagePath:
   0001: D:\GZKF\code\pdf-services\src\main\resources\pdf\chapter.png

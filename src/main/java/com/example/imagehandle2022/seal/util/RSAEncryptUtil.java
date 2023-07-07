@@ -1,8 +1,5 @@
 package com.example.imagehandle2022.seal.util;
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -19,8 +16,11 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
 
+@Service
 public class RSAEncryptUtil {
     /**
      * 私钥
@@ -48,6 +48,8 @@ public class RSAEncryptUtil {
     public RSAPublicKey getPublicKey() {
         return publicKey;
     }
+    @Value("${RSAPublicKeyPath}")
+    private String RSAPublicKeyPath;
     /**
      * 随机生成密钥对
      */
@@ -114,7 +116,7 @@ public class RSAEncryptUtil {
 
     /**
      * 从文件中加载私钥
-     * @param keyFileName 私钥文件名
+     * @param  in
      * @return 是否成功
      * @throws Exception
      */
@@ -235,23 +237,28 @@ public class RSAEncryptUtil {
         return stringBuilder.toString();
     }
     public static void main(String[] args){
+        String filePubKPath="D:\\GZKF\\code\\rsa_public_key.txt";
+        String filePriKPath="D:\\GZKF\\code\\rsa_private_key.txt";
         RSAEncryptUtil rsaEncrypt= new RSAEncryptUtil();
         //rsaEncrypt.genKeyPair();
         //加载公钥
         try {
-            rsaEncrypt.loadPublicKey(RSAEncryptUtil.DEFAULT_PUBLIC_KEY);
-            System.out.println("加载公钥成功");
+            InputStream in = new FileInputStream(filePubKPath);
+            rsaEncrypt.loadPublicKey(in);
+            //rsaEncrypt.loadPublicKey(rsaEncrypt.loadPublicKey(new FileInputStream(filePath)));
+            System.out.println("loading public key successful");
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            System.err.println("加载公钥失败");
+            System.err.println("loading public key failure");
         }
         //加载私钥
         try {
-            rsaEncrypt.loadPrivateKey(RSAEncryptUtil.DEFAULT_PRIVATE_KEY);
-            System.out.println("加载私钥成功");
+            rsaEncrypt.loadPrivateKey(new FileInputStream(filePriKPath));
+            //rsaEncrypt.loadPrivateKey(RSAEncryptUtil.DEFAULT_PRIVATE_KEY);
+            System.out.println("loading private key successful");
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            System.err.println("加载私钥失败");
+            System.err.println("loading private key failure");
         }
         //测试字符串
         String encryptStr= "Test String chaijunkun";
@@ -260,9 +267,9 @@ public class RSAEncryptUtil {
             byte[] cipher = rsaEncrypt.encrypt(rsaEncrypt.getPublicKey(), encryptStr.getBytes());
             //解密
             byte[] plainText = rsaEncrypt.decrypt(rsaEncrypt.getPrivateKey(), cipher);
-            System.out.println("密文长度:"+ cipher.length);
+            System.out.println("cipher text length:"+ cipher.length);
             System.out.println(RSAEncryptUtil.byteArrayToString(cipher));
-            System.out.println("明文长度:"+ plainText.length);
+            System.out.println("plainText length:"+ plainText.length);
             System.out.println(RSAEncryptUtil.byteArrayToString(plainText));
             System.out.println(new String(plainText));
         } catch (Exception e) {
