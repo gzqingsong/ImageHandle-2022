@@ -18,10 +18,10 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
 import lombok.extern.slf4j.Slf4j;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Decoder;
+
 
 @Service
 @Slf4j
@@ -194,8 +194,9 @@ public class RSAEncryptUtil {
             //cipher= Cipher.getInstance("RSA", new BouncyCastleProvider());
             cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, this.publicKey);
-            byte[] output= cipher.doFinal(base64String2ByteFun(plainTextData));
-            return byte2Base64StringFun(output);
+            byte[] output= cipher.doFinal(encode3(plainTextData));
+
+            return Base64.encodeBase64String(output);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("The algorithm can't be found.");
         } catch (NoSuchPaddingException e) {
@@ -224,8 +225,10 @@ public class RSAEncryptUtil {
         try {
             cipher= Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, this.privateKey);
-            byte[] output= cipher.doFinal(base64String2ByteFun(cipherData));
-            return byte2Base64StringFun(output);
+            byte[] output= cipher.doFinal(Base64.decodeBase64(cipherData));
+            String outputString=new String(output, "utf-8");
+
+            return decode3(outputString);
         } catch (NoSuchAlgorithmException e) {
             throw new Exception("无此解密算法");
         } catch (NoSuchPaddingException e) {
@@ -255,19 +258,10 @@ public class RSAEncryptUtil {
                 stringBuilder.append(' ');
             }
         }
+
         return stringBuilder.toString();
     }
-
-    //base64字符串转byte[]
-    public static byte[] base64String2ByteFun(String base64Str){
-        return Base64.decodeBase64(base64Str);
-    }
-    //byte[]转base64
-    public static String byte2Base64StringFun(byte[] b){
-        return Base64.encodeBase64String(b);
-    }
-
-    public static void main(String[] args){
+    public static void main(String[] args)throws UnsupportedEncodingException{
         String filePubKPath="D:\\GZKF\\code\\rsa_public_key.txt";
         String filePriKPath="D:\\GZKF\\code\\rsa_private_key.txt";
         RSAEncryptUtil rsaEncrypt= new RSAEncryptUtil();
@@ -292,7 +286,7 @@ public class RSAEncryptUtil {
             System.err.println("loading private key failure");
         }
         //测试字符串
-        String encryptStr= "Test String chaijunkun";
+        String encryptStr= "赵通";
         try {
             //加密
             String cipher = rsaEncrypt.encrypt(encryptStr);
@@ -305,6 +299,53 @@ public class RSAEncryptUtil {
         } catch (Exception e) {
             System.err.println(e.getMessage());
         }
+    }
+
+
+    /**
+     * base64编码之方法三
+     * @explain Base64.java实现
+     * @param str
+     * 待编码字符串
+     * @return 编码字符串
+     */
+    public static byte[] encode3(String str) {
+        // base64字符串
+        String base64Str = "";
+        byte [] base64Byte = null;
+        try {
+            // String-->byte[]
+             byte[] data = str.getBytes("utf-8");
+            // 编码
+            base64Str =Base64.encodeBase64String(data).replaceAll("\r\n", "");
+            base64Byte =base64Str.getBytes("utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return base64Byte;
+    }
+
+    /**
+     * base64解码之方法三
+     * @explain Base64.java实现
+     * @param base64Str
+     * 待解码字符串
+     * @return 解码字符串
+     */
+    public static String decode3(String base64Str) {
+        // 解码后的字符串
+        String str = "";
+        // 解码
+        byte[] base64Data = Base64.decodeBase64(base64Str);
+        try {
+            // byte[]-->String
+            str = new String(base64Data, "utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
+        return str;
     }
 
 }
