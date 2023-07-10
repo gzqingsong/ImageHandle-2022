@@ -125,6 +125,12 @@
 			<artifactId>bcpkix-jdk15on</artifactId>
 			<version>1.49</version>
 		</dependency>
+		<!-- pagehelper -->
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper-spring-boot-starter</artifactId>
+			<version>1.2.3</version>
+		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>com.itextpdf</groupId>-->
 <!--			<artifactId>itext-pdfa</artifactId>-->
