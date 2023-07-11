@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.imagehandle2022.seal.mapper.UserMapper">
-    <insert id="saveUser" parameterType="user">
+    <insert id="saveUser" parameterType="UserInfo">
        insert into ttms_user(id,username,fullName,password,birthDate,gender,age,contactWay,roleName) values (#{id},#{username},#{fullName},#{password},#{birthDate},#{gender},#{age},#{contactWay},#{roleName})
     </insert>
 
@@ -11,20 +11,20 @@
         delete from ttms_user where id=#{id}
     </delete>
 
-    <update id="updateUser" parameterType="user">
+    <update id="updateUser" parameterType="com.example.imagehandle2022.entity.UserInfo">
         update ttms_user set username = #{username},fullName=#{fullName},password=#{password},birthDate=#{birthDate},gender=#{gender},
         age=#{age},contactWay=#{contactWay},roleName=#{roleName} where id=#{id}
     </update>
 
-    <select id="login" resultType="user">
+    <select id="login" resultType="com.example.imagehandle2022.entity.UserInfo">
         select id,username,fullName,password,birthDate,gender,age,contactWay,roleName from ttms_user where username=#{username} and password=#{password}
     </select>
 
-    <select id="getUserById" parameterType="Long" resultType="user">
+    <select id="getUserById" parameterType="Long" resultType="com.example.imagehandle2022.entity.UserInfo">
         select id,username,fullName,password,birthDate,gender,age,contactWay,roleName from ttms_user where id = #{id}
     </select>
 
-    <select id="findUserByCriteria" parameterType="userCriteria" resultType="user">
+    <select id="findUserByCriteria" parameterType="userCriteria" resultType="com.example.imagehandle2022.entity.UserInfo">
         select id,username,fullName,password,birthDate,gender,age,contactWay,roleName from ttms_user where 1=1
         <if test="fullName!=null and fullName.trim().length>0">
             and fullName like concat("%",#{fullName},"%")

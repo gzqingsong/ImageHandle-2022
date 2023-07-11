@@ -20,4 +20,11 @@ public class LoginController {
         ResultEntity result = userService.login(userDTO);
         return result;
     }
+
+    @RequestMapping("/getUserById")
+    public ResultEntity getUserById(Long token){
+        ResultEntity result = userService.getUserById(token);
+        return result;
+    }
+
 }

@@ -10,6 +10,7 @@ import com.example.imagehandle2022.seal.util.DataUtils;
 import com.example.imagehandle2022.entity.ResultEntity;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +28,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Service
+@Slf4j
 public class UserServiceImpl implements IUserService {
 
     @Autowired
@@ -37,6 +39,7 @@ public class UserServiceImpl implements IUserService {
         UserInfo userParameter = BaseUtils.copyProperties(userDTO, UserInfo.class);
         UserInfo user = userMapper.login(userParameter);
         if(user==null){
+            log.info("Fail to login for the error of account or password");
             return ResultEntity.fail("登录失败，用户账号或密码错误");
         }
         UserDTO dto = bulidUserDTO(user);
