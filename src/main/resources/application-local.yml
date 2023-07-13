@@ -8,7 +8,7 @@ spring:
   cloud:
     consul:
       discovery:
-        health-check-path: /actuator/health #检测实例健康
+        health-check-path: /seal/health #检测实例健康
         health-check- interval: 10s
         #每隔1es检查
         hostname: localhost

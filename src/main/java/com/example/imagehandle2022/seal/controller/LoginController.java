@@ -1,6 +1,5 @@
 package com.example.imagehandle2022.seal.controller;
 
-import com.example.imagehandle2022.seal.service.ISealService;
 import com.example.imagehandle2022.seal.service.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
